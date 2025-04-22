@@ -1,8 +1,8 @@
-from aiogram import Router, types
+from aiogram import Router, types, F
 
 router = Router()
 
-@router.message(commands=["start"])
+@router.message(F.text == "/start")
 async def cmd_start(message: types.Message):
     await message.answer("Добро пожаловать в AlmaDomBot!")
 
