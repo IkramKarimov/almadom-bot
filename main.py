@@ -1,5 +1,5 @@
 import asyncio
-from aiogram import Bot, Dispatcher
+from aiogram import Dispatcher, Bot
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
 from aiogram.webhook.aiohttp_server import setup_application
