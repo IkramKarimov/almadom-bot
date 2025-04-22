@@ -1,27 +1,14 @@
-from flask import Flask, request
-import telegram
-import os
+from aiogram import Bot, Dispatcher, types
+from aiogram.types import InputFile
+from aiogram.utils import executor
+from config import BOT_TOKEN
+from utils.handlers import register_handlers
 
-TOKEN = os.environ.get('BOT_TOKEN')
-bot = telegram.Bot(token=TOKEN)
+bot = Bot(token=BOT_TOKEN)
+dp = Dispatcher(bot)
 
-app = Flask(__name__)
+register_handlers(dp)
 
-@app.route('/')
-def home():
-    return 'AlmaDomBot is running'
-
-@app.route(f'/{TOKEN}', methods=['POST'])
-def webhook():
-    update = telegram.Update.de_json(request.get_json(force=True), bot)
-    if update.message:
-        chat_id = update.message.chat.id
-        text = update.message.text
-
-        if text == '/start':
-            bot.send_message(chat_id=chat_id, text='Привет! Я АлмаДомБот — бот для подачи и фильтрации объектов')
-    return 'ok'
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+if __name__ == "__main__":
+    print("⚡ Bot started!")
+    executor.start_polling(dp, skip_updates=True)

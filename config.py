@@ -1,0 +1,2 @@
+BOT_TOKEN = "YOUR_BOT_TOKEN"
+CHANNEL_ID = -1002550336150  # Replace with your channel ID
