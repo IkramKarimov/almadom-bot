@@ -1,35 +1,24 @@
-import asyncio
-import os
-
-from aiohttp import web
+import logging
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
-from aiogram.client.default import DefaultBotProperties
 from aiogram.webhook.aiohttp_server import setup_application
+from aiohttp import web
+import os
 
-from utils.handlers import register_handlers
+logging.basicConfig(level=logging.INFO)
 
 TOKEN = os.getenv("BOT_TOKEN")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
-bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+bot = Bot(token=TOKEN, default=Bot.DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
-register_handlers(dp)
 
-async def on_startup(app):
+async def on_startup(app: web.Application):
     await bot.set_webhook(f"{WEBHOOK_URL}/{TOKEN}")
-    print("Webhook set")
-
-async def on_shutdown(app):
-    await bot.delete_webhook()
-    print("Webhook removed")
 
 app = web.Application()
 app.on_startup.append(on_startup)
-app.on_shutdown.append(on_shutdown)
+app.router.add_routes([web.post(f'/{TOKEN}', setup_application(app, dp, bot=bot))])
 
-# 👇 Здесь просто вызываем setup_application — он сам добавит нужный маршрут
-setup_application(app, dp, bot=bot)
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     web.run_app(app, port=8000)
