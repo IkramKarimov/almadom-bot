@@ -1,2 +1,4 @@
-BOT_TOKEN = "7513357606:AAEiNTAuIVn3CL_-txzYIl2Pa7VSVzHRFwQ"
-CHANNEL_ID = -1002550336150  # Replace with your channel ID
+import os
+
+BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_BOT_TOKEN")
+APP_URL = os.getenv("APP_URL", "https://your-render-url.onrender.com")
