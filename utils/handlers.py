@@ -30,3 +30,9 @@ async def process_district(message: Message, state: FSMContext):
     await state.update_data(district=message.text)
     await state.set_state(AddApartment.rooms)
     await message.answer("Сколько комнат?", reply_markup=get_room_count_keyboard())
+    
+@router.message(AddApartment.rooms)
+async def ask_complex_name(message: Message, state: FSMContext):
+    await state.update_data(rooms=message.text)
+    await state.set_state(AddApartment.complex_name)
+    await message.answer("Укажите название жилого комплекса (или напишите «-», если его нет):")
