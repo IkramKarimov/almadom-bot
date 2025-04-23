@@ -3,6 +3,8 @@ from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram import Router, F
+from keyboards import property_type_kb, get_district_keyboard
+from states import FlatForm
 
 router = Router()
 
