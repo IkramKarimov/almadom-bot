@@ -78,3 +78,9 @@ async def ask_floor_info(message: Message, state: FSMContext):
     await state.update_data(area=area)
     await state.set_state(AddApartment.floor_info)
     await message.answer("Укажите этаж / этажность (например: 3/9):")
+    
+    @router.message(AddApartment.floor_info)
+async def ask_media(message: Message, state: FSMContext):
+    await state.update_data(floor_info=message.text)
+    await state.set_state(AddApartment.media)
+    await message.answer("Теперь отправьте фото или видео объекта. Когда закончите, нажмите /done.")
