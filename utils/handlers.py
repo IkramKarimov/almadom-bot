@@ -65,3 +65,16 @@ async def ask_area(message: Message, state: FSMContext):
     await state.update_data(price=int(price_text))
     await state.set_state(AddApartment.area)
     await message.answer("Укажите площадь квартиры (в м²):")
+    
+@router.message(AddApartment.area)
+async def ask_floor_info(message: Message, state: FSMContext):
+    area_text = message.text.replace(",", ".").replace(" ", "")
+    try:
+        area = float(area_text)
+    except ValueError:
+        await message.answer("Пожалуйста, введите площадь числом.")
+        return
+
+    await state.update_data(area=area)
+    await state.set_state(AddApartment.floor_info)
+    await message.answer("Укажите этаж / этажность (например: 3/9):")
