@@ -47,3 +47,11 @@ confirm_post_kb = InlineKeyboardMarkup(
         [InlineKeyboardButton(text="Отменить", callback_data="cancel_post")]
     ]
 )
+
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+def get_preview_keyboard():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="✅ Подтвердить", callback_data="confirm_publish")],
+        [InlineKeyboardButton(text="❌ Отменить", callback_data="cancel_publish")]
+    ])
