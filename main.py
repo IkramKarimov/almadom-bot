@@ -6,7 +6,7 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_applicati
 from aiohttp import web
 
 from config import TOKEN, WEBHOOK_URL
-from handlers import router
+from utils.handlers import router
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
