@@ -17,9 +17,6 @@ async def cmd_start(message: Message):
 async def choose_property_type(message: Message):
     await message.answer("Выберите тип недвижимости:", reply_markup=property_type_kb)
 
-def register_handlers(dp):
-    dp.include_router(router)
-
 @router.message(F.text == "Квартира")
 async def start_flat_creation(message: Message, state: FSMContext):
     await state.set_state(AddApartment.district)
@@ -139,3 +136,6 @@ async def cancel_publish(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_reply_markup()
     await callback.message.answer("Публикация отменена. Чтобы начать заново, нажмите /add.")
     await state.clear()
+    
+def register_handlers(dp):
+    dp.include_router(router)
