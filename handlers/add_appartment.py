@@ -109,7 +109,7 @@ async def process_floor(message: Message, state: FSMContext):
     await message.answer("Отправьте фото или видео объекта (можно несколько). Когда закончите — нажмите 'Готово'.")
     await state.set_state(AddApartment.media)
     
-    @router.message(AddApartment.media, F.photo | F.video)
+@router.message(AddApartment.media, F.photo | F.video)
 async def handle_media(message: Message, state: FSMContext):
     data = await state.get_data()
     media = data.get("media", [])
