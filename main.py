@@ -2,11 +2,11 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
-from aiogram.webhook.aiohttp_server import setup_application
+from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
 
-from handlers import router
 from config import TOKEN, WEBHOOK_URL
+from handlers import router
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
@@ -17,30 +17,27 @@ bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 dp.include_router(router)
 
-async def on_startup(app: web.Application) -> None:
-    try:
-        await bot.set_webhook(f"{WEBHOOK_URL}/{TOKEN}")
-        logger.info("Webhook успешно установлен.")
-    except Exception as e:
-        logger.error(f"Ошибка при установке webhook: {e}")
+async def on_startup(app: web.Application):
+    await bot.set_webhook(f"{WEBHOOK_URL}/{TOKEN}")
+    logger.info("Webhook установлен.")
 
-async def on_shutdown(app: web.Application) -> None:
-    try:
-        await bot.delete_webhook()
-        logger.info("Webhook успешно удален.")
-    except Exception as e:
-        logger.error(f"Ошибка при удалении webhook: {e}")
+async def on_shutdown(app: web.Application):
+    await bot.delete_webhook()
+    logger.info("Webhook удален.")
 
 def create_app() -> web.Application:
     app = web.Application()
     app.on_startup.append(on_startup)
     app.on_shutdown.append(on_shutdown)
-    return setup_application(app=app, dispatcher=dp, bot=bot)
+
+    # Регистрируем вебхуки для Telegram
+    SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path=f"/{TOKEN}")
+    
+    return app
 
 if __name__ == "__main__":
     try:
         logger.info("Запуск веб-приложения...")
-        app = create_app()
-        web.run_app(app, port=8000)
+        web.run_app(create_app(), port=8000)
     except Exception as e:
         logger.error(f"Ошибка при запуске приложения: {e}")
