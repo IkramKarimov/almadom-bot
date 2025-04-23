@@ -23,3 +23,9 @@ def register_handlers(dp):
 async def start_flat_creation(message: Message, state: FSMContext):
     await state.set_state(AddApartment.district)
     await message.answer("Выберите район:", reply_markup=get_district_keyboard())
+    
+@router.message(AddApartment.district)
+async def process_district(message: Message, state: FSMContext):
+    await state.update_data(district=message.text)
+    await state.set_state(AddApartment.rooms)
+    await message.answer("Сколько комнат?", reply_markup=get_room_count_keyboard())
