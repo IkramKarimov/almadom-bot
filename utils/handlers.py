@@ -104,3 +104,38 @@ async def finish_media_upload(message: Message, state: FSMContext):
     # Здесь будет следующий шаг — предварительный просмотр
     
 from utils.keyboards import property_type_kb, get_district_keyboard, get_preview_keyboard
+
+@router.message(Command("done"))
+async def preview_listing(message: Message, state: FSMContext):
+    data = await state.get_data()
+
+    preview_text = (
+        f"<b>Предпросмотр квартиры:</b>\n"
+        f"<b>Район:</b> {data.get('district')}\n"
+        f"<b>Количество комнат:</b> {data.get('rooms')}\n"
+        f"<b>Площадь:</b> {data.get('area')} м²\n"
+        f"<b>Год постройки:</b> {data.get('year_built')}\n"
+        f"<b>ЖК:</b> {data.get('complex_name', '—')}\n"
+        f"<b>Этажность:</b> {data.get('floor_info', '—')}\n"
+        f"<b>Цена:</b> {data.get('price')} ₸"
+    )
+
+    media = data.get("media", [])
+    if media:
+        await message.answer_media_group(media)
+
+    await message.answer(preview_text, reply_markup=get_preview_keyboard())
+    
+from aiogram import types
+
+@router.callback_query(lambda c: c.data == "confirm_publish")
+async def confirm_publish(callback: types.CallbackQuery, state: FSMContext):
+    await callback.message.edit_reply_markup()
+    await callback.message.answer("Отлично! Теперь отправьте ваш контакт для связи.")
+    await state.set_state(AddApartment.contact)
+
+@router.callback_query(lambda c: c.data == "cancel_publish")
+async def cancel_publish(callback: types.CallbackQuery, state: FSMContext):
+    await callback.message.edit_reply_markup()
+    await callback.message.answer("Публикация отменена. Чтобы начать заново, нажмите /add.")
+    await state.clear()
