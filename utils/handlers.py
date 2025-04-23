@@ -36,3 +36,10 @@ async def ask_complex_name(message: Message, state: FSMContext):
     await state.update_data(rooms=message.text)
     await state.set_state(AddApartment.complex_name)
     await message.answer("Укажите название жилого комплекса (или напишите «-», если его нет):")
+    
+@router.message(AddApartment.complex_name)
+async def ask_year_built(message: Message, state: FSMContext):
+    text = message.text.strip()
+    await state.update_data(complex_name=None if text == "-" else text)
+    await state.set_state(AddApartment.year_built)
+    await message.answer("Укажите год постройки:")
