@@ -211,8 +211,21 @@ async def handle_post_confirmation(callback: types.CallbackQuery, state: FSMCont
 
         await callback.message.edit_reply_markup(reply_markup=None)
         await callback.message.answer("Объект опубликован.")
+        
+        ADMIN_ID = 5528480
+        
+        # Отправка админу в личку
+await callback.bot.send_message(
+    chat_id=ADMIN_ID,
+    text=f"✅ Новый объект опубликован:\n\n{caption}",
+    parse_mode="HTML"
+)
+        
     else:
+    
         await callback.message.edit_reply_markup(reply_markup=None)
         await callback.message.answer("Публикация отменена.")
 
     await state.clear()
+    
+    
