@@ -39,3 +39,12 @@ confirm_post_kb = InlineKeyboardMarkup(
         [InlineKeyboardButton(text="Отменить", callback_data="cancel_post")]
     ]
 )
+
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+
+def get_room_count_keyboard():
+    buttons = [
+        [KeyboardButton(text="1"), KeyboardButton(text="2")],
+        [KeyboardButton(text="3"), KeyboardButton(text="4+")],
+    ]
+    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
