@@ -10,7 +10,7 @@ router = Router()
 async def cmd_start(message: Message):
     await message.answer("Добро пожаловать в АлмаДомБот!")
     
-    @router.message(F.text == "Добавить объект")
+@router.message(F.text == "Добавить объект")
 async def choose_property_type(message: Message):
     await message.answer("Выберите тип недвижимости:", reply_markup=property_type_kb)
 
