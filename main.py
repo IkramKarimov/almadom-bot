@@ -1,7 +1,4 @@
-import asyncio
 import logging
-from typing import Any
-
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
@@ -21,7 +18,6 @@ dp = Dispatcher()
 dp.include_router(router)
 
 async def on_startup(app: web.Application) -> None:
-    """Функция запуска приложения."""
     try:
         await bot.set_webhook(f"{WEBHOOK_URL}/{TOKEN}")
         logger.info("Webhook успешно установлен.")
@@ -29,7 +25,6 @@ async def on_startup(app: web.Application) -> None:
         logger.error(f"Ошибка при установке webhook: {e}")
 
 async def on_shutdown(app: web.Application) -> None:
-    """Функция остановки приложения."""
     try:
         await bot.delete_webhook()
         logger.info("Webhook успешно удален.")
@@ -37,27 +32,12 @@ async def on_shutdown(app: web.Application) -> None:
         logger.error(f"Ошибка при удалении webhook: {e}")
 
 def create_app() -> web.Application:
-    """Создание и настройка веб-приложения."""
     app = web.Application()
-    # Правильный вызов setup_application:
-app = setup_application(app=app, dispatcher=dp, bot=bot)
-
-# Устанавливаем webhook
-async def on_startup(app: web.Application):
-    await bot.set_webhook(f"{WEBHOOK_URL}/{TOKEN}")
     app.on_startup.append(on_startup)
     app.on_shutdown.append(on_shutdown)
-
-    app.router.add_routes([
-        web.post(f"/{TOKEN}", setup_application(app=app, dispatcher=dp, bot=bot)),
-    ])
-
-    return app
-
-app.on_startup.append(on_startup)
+    return setup_application(app=app, dispatcher=dp, bot=bot)
 
 if __name__ == "__main__":
-    web.run_app(app, port=8000)
     try:
         logger.info("Запуск веб-приложения...")
         app = create_app()
