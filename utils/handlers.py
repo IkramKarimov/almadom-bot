@@ -4,7 +4,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram import Router, F
 from utils.keyboards import property_type_kb, get_district_keyboard
-from utils.add_appartment_states import FlatForm
+from utils.add_appartment_state import AddAppartment
 
 router = Router()
 
