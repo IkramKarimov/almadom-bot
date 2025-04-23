@@ -102,3 +102,5 @@ async def finish_media_upload(message: Message, state: FSMContext):
     await message.answer("Спасибо! Заявка готова к предварительному просмотру.")
     
     # Здесь будет следующий шаг — предварительный просмотр
+    
+from utils.keyboards import property_type_kb, get_district_keyboard, get_preview_keyboard
