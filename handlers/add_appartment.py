@@ -37,3 +37,17 @@ async def process_rooms(message: types.Message, state: FSMContext):
     await state.set_state(AddApartment.complex_name)
 
     await message.answer("Укажите название ЖК (если есть) или напишите '-' (если нет):", reply_markup=types.ReplyKeyboardRemove())
+    
+from datetime import datetime
+
+@router.message(AddApartment.year_built)
+async def process_year_built(message: Message, state: FSMContext):
+    year = message.text.strip()
+
+    if not year.isdigit() or not (1900 <= int(year) <= datetime.now().year):
+        await message.answer("Пожалуйста, введите корректный год постройки (от 1900 до текущего).")
+        return
+
+    await state.update_data(year_built=int(year))
+    await message.answer("Введите цену (только число, без пробелов):")
+    await state.set_state(AddApartment.price)
