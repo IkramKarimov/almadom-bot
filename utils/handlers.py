@@ -79,8 +79,26 @@ async def ask_floor_info(message: Message, state: FSMContext):
     await state.set_state(AddApartment.floor_info)
     await message.answer("Укажите этаж / этажность (например: 3/9):")
     
-    @router.message(AddApartment.floor_info)
+@router.message(AddApartment.floor_info)
 async def ask_media(message: Message, state: FSMContext):
     await state.update_data(floor_info=message.text)
     await state.set_state(AddApartment.media)
     await message.answer("Теперь отправьте фото или видео объекта. Когда закончите, нажмите /done.")
+    
+@router.message(AddApartment.media, F.photo | F.video)
+async def collect_media(message: Message, state: FSMContext):
+    data = await state.get_data()
+    media = data.get("media", [])
+    
+    file_id = message.photo[-1].file_id if message.photo else message.video.file_id
+    media.append(file_id)
+    
+    await state.update_data(media=media)
+    await message.answer("Файл добавлен. Отправьте еще или нажмите /done, если закончили.")
+    
+@router.message(Command("done"))
+async def finish_media_upload(message: Message, state: FSMContext):
+    data = await state.get_data()
+    await message.answer("Спасибо! Заявка готова к предварительному просмотру.")
+    
+    # Здесь будет следующий шаг — предварительный просмотр
