@@ -54,3 +54,14 @@ async def ask_price(message: Message, state: FSMContext):
     await state.update_data(year_built=int(year))
     await state.set_state(AddApartment.price)
     await message.answer("Укажите цену объекта (в тг):")
+    
+@router.message(AddApartment.price)
+async def ask_area(message: Message, state: FSMContext):
+    price_text = message.text.replace(" ", "").replace(",", "")
+    if not price_text.isdigit():
+        await message.answer("Пожалуйста, введите цену числом.")
+        return
+
+    await state.update_data(price=int(price_text))
+    await state.set_state(AddApartment.area)
+    await message.answer("Укажите площадь квартиры (в м²):")
