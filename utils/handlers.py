@@ -43,3 +43,14 @@ async def ask_year_built(message: Message, state: FSMContext):
     await state.update_data(complex_name=None if text == "-" else text)
     await state.set_state(AddApartment.year_built)
     await message.answer("Укажите год постройки:")
+    
+@router.message(AddApartment.year_built)
+async def ask_price(message: Message, state: FSMContext):
+    year = message.text.strip()
+    if not year.isdigit():
+        await message.answer("Пожалуйста, введите год числом.")
+        return
+
+    await state.update_data(year_built=int(year))
+    await state.set_state(AddApartment.price)
+    await message.answer("Укажите цену объекта (в тг):")
