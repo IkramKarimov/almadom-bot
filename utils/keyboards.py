@@ -22,6 +22,17 @@ def get_district_keyboard():
     ]
     keyboard = [[KeyboardButton(text=d)] for d in districts]
     return ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
+    
+# Клавиатура выбора количества комнат
+def get_room_count_keyboard():
+    buttons = [
+        [KeyboardButton(text="1"), KeyboardButton(text="2")],
+        [KeyboardButton(text="3"), KeyboardButton(text="4+")],
+    ]
+    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
+
+
+
 
 done_upload_kb = ReplyKeyboardMarkup(
     keyboard=[
@@ -30,14 +41,6 @@ done_upload_kb = ReplyKeyboardMarkup(
     resize_keyboard=True,
     one_time_keyboard=True
 )
-
-# Клавиатура выбора количества комнат
-def get_room_count_keyboard():
-    buttons = [
-        [KeyboardButton(text="1"), KeyboardButton(text="2")],
-        [KeyboardButton(text="3"), KeyboardButton(text="4+")],
-    ]
-    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
