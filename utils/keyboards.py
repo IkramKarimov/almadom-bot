@@ -1,5 +1,28 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
+# Клавиатура выбора типа недвижимости
+property_type_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="Квартира")],
+        [KeyboardButton(text="Дом")],
+        [KeyboardButton(text="Таунхаус")],
+        [KeyboardButton(text="Коммерческая недвижимость")],
+        [KeyboardButton(text="Участок")]
+    ],
+    resize_keyboard=True,
+    one_time_keyboard=True
+)
+
+# Клавиатура выбора района
+def get_district_keyboard():
+    districts = [
+        "Алатауский", "Алмалинский", "Ауэзовский",
+        "Бостандыкский", "Жетысуский", "Медеуский",
+        "Наурызбайский", "Турксибский"
+    ]
+    keyboard = [[KeyboardButton(text=d)] for d in districts]
+    return ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
+
 done_upload_kb = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="Готово")]
