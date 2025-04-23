@@ -39,6 +39,12 @@ async def on_shutdown(app: web.Application) -> None:
 def create_app() -> web.Application:
     """Создание и настройка веб-приложения."""
     app = web.Application()
+    # Правильный вызов setup_application:
+app = setup_application(app=app, dispatcher=dp, bot=bot)
+
+# Устанавливаем webhook
+async def on_startup(app: web.Application):
+    await bot.set_webhook(f"{WEBHOOK_URL}/{TOKEN}")
     app.on_startup.append(on_startup)
     app.on_shutdown.append(on_shutdown)
 
