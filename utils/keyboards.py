@@ -31,9 +31,6 @@ def get_room_count_keyboard():
     ]
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
 
-
-
-
 done_upload_kb = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="Готово")]
