@@ -139,3 +139,80 @@ async def finish_media_upload(message: Message, state: FSMContext):
 from utils.keyboards import done_upload_kb
 
 from utils.keyboards import confirm_post_kb
+
+# Сохраняем данные и подготавливаем предпросмотр
+data = await state.get_data()
+
+caption = (
+    f"<b>Квартира</b>\n"
+    f"Район: {data['district']}\n"
+    f"Комнат: {data['rooms']}\n"
+    f"ЖК: {data['residential_complex'] or '—'}\n"
+    f"Год постройки: {data['year']}\n"
+    f"Цена: {data['price']} ₸\n"
+    f"Площадь: {data['area']} м²\n"
+    f"Этаж: {data['floor']}\n"
+)
+
+media = data.get("media", [])
+
+if media:
+    if len(media) == 1:
+        await message.bot.send_photo(
+            chat_id=message.chat.id,
+            photo=media[0],
+            caption=caption,
+            parse_mode="HTML",
+            reply_markup=confirm_post_kb
+        )
+    else:
+        from aiogram.types import InputMediaPhoto
+        media_group = [InputMediaPhoto(media=m) for m in media]
+        media_group[0].caption = caption
+        media_group[0].parse_mode = "HTML"
+        await message.bot.send_media_group(chat_id=message.chat.id, media=media_group)
+        await message.answer("Предпросмотр объекта. Подтвердите публикацию.", reply_markup=confirm_post_kb)
+else:
+    await message.answer("Нет медиафайлов для предпросмотра.", reply_markup=confirm_post_kb)
+
+await state.set_state("awaiting_confirmation")
+
+@router.callback_query(lambda c: c.data in ["confirm_post", "cancel_post"])
+async def handle_post_confirmation(callback: types.CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+
+    if callback.data == "confirm_post":
+        # Отправка в канал
+        caption = (
+            f"<b>Квартира</b>\n"
+            f"Район: {data['district']}\n"
+            f"Комнат: {data['rooms']}\n"
+            f"ЖК: {data['residential_complex'] or '—'}\n"
+            f"Год постройки: {data['year']}\n"
+            f"Цена: {data['price']} ₸\n"
+            f"Площадь: {data['area']} м²\n"
+            f"Этаж: {data['floor']}\n"
+        )
+
+        media = data.get("media", [])
+        channel_id = "@название_твоего_канала"
+
+        if media:
+            if len(media) == 1:
+                await callback.bot.send_photo(chat_id=channel_id, photo=media[0], caption=caption, parse_mode="HTML")
+            else:
+                from aiogram.types import InputMediaPhoto
+                media_group = [InputMediaPhoto(media=m) for m in media]
+                media_group[0].caption = caption
+                media_group[0].parse_mode = "HTML"
+                await callback.bot.send_media_group(chat_id=channel_id, media=media_group)
+        else:
+            await callback.bot.send_message(chat_id=channel_id, text=caption, parse_mode="HTML")
+
+        await callback.message.edit_reply_markup(reply_markup=None)
+        await callback.message.answer("Объект опубликован.")
+    else:
+        await callback.message.edit_reply_markup(reply_markup=None)
+        await callback.message.answer("Публикация отменена.")
+
+    await state.clear()
