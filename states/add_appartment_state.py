@@ -10,3 +10,5 @@ class AddApartment(StatesGroup):
     floor_info = State()
     media = State()
     confirm = State()
+    
+    media = State()
