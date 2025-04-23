@@ -135,3 +135,5 @@ async def finish_media_upload(message: Message, state: FSMContext):
     await state.clear()
 
     # Здесь можно добавить отправку заявки в канал и админу
+    
+from utils.keyboards import done_upload_kb
