@@ -54,7 +54,10 @@ async def on_startup(app: web.Application):
 
     return app
 
+app.on_startup.append(on_startup)
+
 if __name__ == "__main__":
+    web.run_app(app, port=8000)
     try:
         logger.info("Запуск веб-приложения...")
         app = create_app()
