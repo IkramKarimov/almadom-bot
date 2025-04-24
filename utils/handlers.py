@@ -8,6 +8,7 @@ from utils.keyboards import (property_type_kb,
     get_room_count_keyboard,
     get_preview_keyboard,
     get_contact_keyboard,
+    done_keyboard,
 )
 from states.add_appartment_state import AddApartment
 
@@ -84,7 +85,6 @@ async def ask_floor_info(message: Message, state: FSMContext):
 async def ask_media(message: Message, state: FSMContext):
     await state.update_data(floor_info=message.text)
     await state.set_state(AddApartment.media)
-    from utils.keyboards import done_keyboard
     await message.answer("Теперь отправьте фото или видео объекта. Когда закончите, нажмите «Готово».", reply_markup=done_keyboard)
     
 @router.message(AddApartment.media, F.photo | F.video)
