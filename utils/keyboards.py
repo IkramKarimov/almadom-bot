@@ -56,6 +56,7 @@ def get_preview_keyboard():
         [InlineKeyboardButton(text="❌ Отменить", callback_data="cancel_publish")]
     ])
     
+# Клавиатура отправки контакта
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 def get_contact_keyboard():
