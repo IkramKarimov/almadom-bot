@@ -4,6 +4,7 @@ class AddApartment(StatesGroup):
     district = State()
     rooms = State()
     complex_name = State()
+    address = State()
     year_built = State()
     price = State()
     area = State()
