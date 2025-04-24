@@ -40,6 +40,13 @@ async def ask_complex_name(message: Message, state: FSMContext):
     await message.answer("Укажите название жилого комплекса (или напишите «-», если его нет):")
     
 @router.message(AddApartment.complex_name)
+async def ask_address(message: Message, state: FSMContext):
+    text = message.text.strip()
+    await state.update_data(complex_name=None if text == "-" else text)
+    await state.set_state(AddApartment.address)
+    await message.answer("Укажите адрес (улица или микрорайон, номер дома, пересечение с улицей при наличии):")
+    
+@router.message(AddApartment.address)
 async def ask_year_built(message: Message, state: FSMContext):
     text = message.text.strip()
     await state.update_data(complex_name=None if text == "-" else text)
@@ -139,6 +146,7 @@ async def preview_listing(message: Message, state: FSMContext):
         f"<b>Площадь:</b> {data.get('area')} м²\n"
         f"<b>Год постройки:</b> {data.get('year_built')}\n"
         f"<b>ЖК:</b> {data.get('complex_name', '—')}\n"
+        f"<b>Адрес:</b> {data.get('address')}\n"
         f"<b>Этажность:</b> {data.get('floor_info', '—')}\n"
         f"<b>Цена:</b> {format(data.get('price'), ',').replace(',', '.')} ₸"
     )
