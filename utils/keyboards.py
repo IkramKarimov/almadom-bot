@@ -33,7 +33,7 @@ def get_room_count_keyboard():
     
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-done_upload_kb = ReplyKeyboardMarkup(
+done_keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="Готово")]
     ],
