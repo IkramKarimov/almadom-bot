@@ -137,6 +137,8 @@ async def preview_listing(message: Message, state: FSMContext):
     
 from aiogram import types
 
+from utils.keyboards import get_contact_keyboard
+
 @router.callback_query(lambda c: c.data == "confirm_publish")
 async def confirm_publish(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_reply_markup()
