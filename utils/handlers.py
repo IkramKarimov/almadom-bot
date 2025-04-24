@@ -93,12 +93,7 @@ async def collect_media(message: Message, state: FSMContext):
     await state.update_data(media=media)
     await message.answer("Файл добавлен. Отправьте еще или нажмите /done, если закончили.")
     
-@router.message(Command("done"))
-async def finish_media_upload(message: Message, state: FSMContext):
-    data = await state.get_data()
-    await message.answer("Спасибо! Заявка готова к предварительному просмотру.")
-    
-    # Здесь будет следующий шаг — предварительный просмотр
+# Здесь будет следующий шаг — предварительный просмотр
     
 from utils.keyboards import property_type_kb, get_district_keyboard, get_preview_keyboard
 
