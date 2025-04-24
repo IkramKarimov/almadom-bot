@@ -154,9 +154,6 @@ async def cancel_publish(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.answer("Публикация отменена. Чтобы начать заново, нажмите /add.")
     await state.clear()
     
-def register_handlers(dp):
-    dp.include_router(router)
-    
 from aiogram.types import Contact, InputMediaPhoto, InputMediaVideo
 
 @router.message(AddApartment.contact, F.contact)
@@ -197,3 +194,6 @@ async def process_contact(message: Message, state: FSMContext):
 
     await message.answer("Объявление опубликовано! Спасибо.")
     await state.clear()
+    
+def register_handlers(dp):
+    dp.include_router(router)
