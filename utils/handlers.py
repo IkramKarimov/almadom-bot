@@ -100,7 +100,7 @@ from utils.keyboards import property_type_kb, get_district_keyboard, get_preview
 import logging
 logger = logging.getLogger(__name__)
 
-@router.message(Command("done"))
+@router.message(AddApartment.media, Command("done"))
 async def preview_listing(message: Message, state: FSMContext):
     data = await state.get_data()
 
