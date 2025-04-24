@@ -163,6 +163,9 @@ async def process_contact(message: Message, state: FSMContext):
     await state.update_data(contact=contact)
 
     data = await state.get_data()
+    # Здесь можно сформировать и отправить финальное сообщение в канал или администратору
+    await message.answer("Контакт получен, объект отправлен на модерацию!")
+    await state.clear()
 
     post_text = (
         f"<b>Новое объявление:</b>\n"
