@@ -102,6 +102,9 @@ async def finish_media_upload(message: Message, state: FSMContext):
     
 from utils.keyboards import property_type_kb, get_district_keyboard, get_preview_keyboard
 
+import logging
+logger = logging.getLogger(__name__)
+
 @router.message(Command("done"))
 async def preview_listing(message: Message, state: FSMContext):
     data = await state.get_data()
