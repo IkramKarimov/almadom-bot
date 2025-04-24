@@ -35,8 +35,9 @@ async def process_district(message: types.Message, state: FSMContext):
 async def process_rooms(message: types.Message, state: FSMContext):
     await state.update_data(rooms=message.text)
     await state.set_state(AddApartment.complex_name)
-
     await message.answer("Укажите название ЖК (если есть) или напишите '-' (если нет):", reply_markup=types.ReplyKeyboardRemove())
+    await state.set_state(AddApartment.address)
+    await message.answer("Укажите адрес (улица или микрорайон, номер дома, пересечение с улицей при наличии):", reply_markup=types.ReplyKeyboardRemove())
     
 from datetime import datetime
 
