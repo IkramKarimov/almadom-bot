@@ -6,7 +6,7 @@ from aiogram import Router, F
 from utils.keyboards import (property_type_kb, 
     get_district_keyboard,
     get_room_count_keyboard,
-    get_preview_keyboatd,
+    get_preview_keyboard,
     get_contact_keyboard,
 )
 from states.add_appartment_state import AddApartment
