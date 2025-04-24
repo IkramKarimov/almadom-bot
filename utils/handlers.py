@@ -206,6 +206,7 @@ async def process_contact(message: Message, state: FSMContext):
         f"<b>Площадь:</b> {data.get('area')} м²\n"
         f"<b>Год постройки:</b> {data.get('year_built')}\n"
         f"<b>ЖК:</b> {data.get('complex_name', '—')}\n"
+        f"<b>Адрес:</b> {data.get('address')}\n"
         f"<b>Этажность:</b> {data.get('floor_info')}\n"
         f"<b>Цена:</b> {format(data.get('price'), ',').replace(',', '.')} ₸\n"
         f"<b>Контакт:</b> {contact}"
