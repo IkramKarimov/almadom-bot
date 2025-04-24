@@ -55,3 +55,14 @@ def get_preview_keyboard():
         [InlineKeyboardButton(text="✅ Подтвердить", callback_data="confirm_publish")],
         [InlineKeyboardButton(text="❌ Отменить", callback_data="cancel_publish")]
     ])
+    
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+
+def get_contact_keyboard():
+    return ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text="Отправить контакт", request_contact=True)]
+        ],
+        resize_keyboard=True,
+        one_time_keyboard=True
+    )
