@@ -30,6 +30,8 @@ def get_room_count_keyboard():
         [KeyboardButton(text="3"), KeyboardButton(text="4+")],
     ]
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
+    
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 done_upload_kb = ReplyKeyboardMarkup(
     keyboard=[
