@@ -96,7 +96,7 @@ async def collect_media(message: Message, state: FSMContext):
     media.append(file_id)
     
     await state.update_data(media=media)
-    await message.answer("Файл добавлен. Отправьте еще или нажмите "Готово", если закончили.")
+    await message.answer("Файл добавлен. Отправьте еще или нажмите \"Готово\", если закончили.")
     
 @router.message(AddApartment.media, F.text.lower() == "готово")
 async def done_from_button(message: Message, state: FSMContext):
