@@ -49,7 +49,7 @@ async def ask_address(message: Message, state: FSMContext):
 @router.message(AddApartment.address)
 async def ask_year_built(message: Message, state: FSMContext):
     text = message.text.strip()
-    await state.update_data(complex_name=None if text == "-" else text)
+    await state.update_data(address=None if text == "-" else text)
     await state.set_state(AddApartment.year_built)
     await message.answer("Укажите год постройки:")
     
