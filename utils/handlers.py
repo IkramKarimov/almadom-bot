@@ -140,7 +140,10 @@ from aiogram import types
 @router.callback_query(lambda c: c.data == "confirm_publish")
 async def confirm_publish(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_reply_markup()
-    await callback.message.answer("Отлично! Теперь отправьте ваш контакт для связи.")
+    await callback.message.answer(
+        "Отлично! Теперь отправьте ваш контакт для связи.",
+        reply_markup=get_contact_keyboard()
+    )
     await state.set_state(AddApartment.contact)
 
 @router.callback_query(lambda c: c.data == "cancel_publish")
@@ -151,3 +154,41 @@ async def cancel_publish(callback: types.CallbackQuery, state: FSMContext):
     
 def register_handlers(dp):
     dp.include_router(router)
+    
+from aiogram.types import Contact, InputMediaPhoto, InputMediaVideo
+
+@router.message(AddApartment.contact, F.contact)
+async def process_contact(message: Message, state: FSMContext):
+    contact = message.contact.phone_number
+    await state.update_data(contact=contact)
+
+    data = await state.get_data()
+
+    post_text = (
+        f"<b>Новое объявление:</b>\n"
+        f"<b>Район:</b> {data.get('district')}\n"
+        f"<b>Комнаты:</b> {data.get('rooms')}\n"
+        f"<b>Площадь:</b> {data.get('area')} м²\n"
+        f"<b>Год постройки:</b> {data.get('year_built')}\n"
+        f"<b>ЖК:</b> {data.get('complex_name', '—')}\n"
+        f"<b>Этажность:</b> {data.get('floor_info')}\n"
+        f"<b>Цена:</b> {data.get('price')} ₸\n"
+        f"<b>Контакт:</b> {contact}"
+    )
+
+    media_group = []
+    for file_id in data.get("media", []):
+        if file_id.startswith("AgAC"):  # Фото
+            media_group.append(InputMediaPhoto(media=file_id))
+        elif file_id.startswith("BAAC") or file_id.startswith("DQAC"):  # Видео
+            media_group.append(InputMediaVideo(media=file_id))
+
+    CHANNEL_ID = -1001234567890  # <-- замените на ID вашего канала
+
+    if media_group:
+        await message.bot.send_media_group(chat_id=CHANNEL_ID, media=media_group)
+
+    await message.bot.send_message(chat_id=CHANNEL_ID, text=post_text)
+
+    await message.answer("Объявление опубликовано! Спасибо.")
+    await state.clear()
