@@ -9,6 +9,7 @@ class AddApartment(StatesGroup):
     area = State()
     floor_info = State()
     media = State()
+    contact = State()
     confirm = State()
     
     media = State()
