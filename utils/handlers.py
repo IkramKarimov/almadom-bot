@@ -115,9 +115,19 @@ async def preview_listing(message: Message, state: FSMContext):
         f"<b>Цена:</b> {data.get('price')} ₸"
     )
 
-    media = data.get("media", [])
-    if media:
-        await message.answer_media_group(media)
+from aiogram.types import InputMediaPhoto, InputMediaVideo
+
+media = data.get("media", [])
+media_group = []
+
+for file_id in media:
+    if file_id.startswith("AgAC"):  # Фото
+        media_group.append(InputMediaPhoto(media=file_id))
+    elif file_id.startswith("BAAC") or file_id.startswith("DQAC"):  # Видео
+        media_group.append(InputMediaVideo(media=file_id))
+
+if media_group:
+    await message.answer_media_group(media_group)
 
     await message.answer(preview_text, reply_markup=get_preview_keyboard())
     
