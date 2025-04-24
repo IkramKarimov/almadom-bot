@@ -85,7 +85,7 @@ async def ask_media(message: Message, state: FSMContext):
     await state.update_data(floor_info=message.text)
     await state.set_state(AddApartment.media)
     from utils.keyboards import done_keyboard
-    await message.answer("Теперь отправьте фото или видео объекта. Когда закончите, нажмите «Готово».", reply_markup=done_keyboard)
+    await message.answer("Теперь отправьте фото или видео объекта. Когда закончите, нажмите «Готово»."", reply_markup=done_keyboard)
     
 @router.message(AddApartment.media, F.photo | F.video)
 async def collect_media(message: Message, state: FSMContext):
