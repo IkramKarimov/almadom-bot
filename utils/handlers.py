@@ -155,6 +155,7 @@ async def cancel_publish(callback: types.CallbackQuery, state: FSMContext):
     await state.clear()
     
 from aiogram.types import Contact, InputMediaPhoto, InputMediaVideo
+from config import CHANNEL_ID
 
 @router.message(AddApartment.contact, F.contact)
 async def process_contact(message: Message, state: FSMContext):
@@ -184,8 +185,6 @@ async def process_contact(message: Message, state: FSMContext):
             media_group.append(InputMediaPhoto(media=file_id))
         elif file_id.startswith("BAAC") or file_id.startswith("DQAC"):  # Видео
             media_group.append(InputMediaVideo(media=file_id))
-
-    CHANNEL_ID = -1001234567890  # <-- замените на ID вашего канала
 
     if media_group:
         await message.bot.send_media_group(chat_id=CHANNEL_ID, media=media_group)
