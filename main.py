@@ -6,6 +6,8 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_applicati
 from aiohttp import web
 
 from config import TOKEN, WEBHOOK_URL
+from config import WEB_SERVER_HOST, WEB_SERVER_PORT
+
 from utils.handlers import router
 
 # Настройка логирования
@@ -38,6 +40,6 @@ def create_app() -> web.Application:
 if __name__ == "__main__":
     try:
         logger.info("Запуск веб-приложения...")
-        web.run_app(create_app(), port=8000)
+        web.run_app(create_app(), host=WEB_SERVER_HOST, port=WEB_SERVER_PORT)
     except Exception as e:
         logger.error(f"Ошибка при запуске приложения: {e}")
