@@ -64,8 +64,8 @@ def get_preview_keyboard():
 def edit_fields_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Тип недвижимости", callback_data="edit:type")],
-        [InlineKeyboardButton(text="Район", callback_data="edit:district")],
-        [InlineKeyboardButton(text="Количество комнат", callback_data="edit:rooms")],
+        [InlineKeyboardButton(text="Район", callback_data="edit_district")],
+        [InlineKeyboardButton(text="Количество комнат", callback_data="edit_rooms")],
         [InlineKeyboardButton(text="ЖК", callback_data="edit:complex_name")],
         [InlineKeyboardButton(text="Адрес", callback_data="edit:address")],
         [InlineKeyboardButton(text="Год постройки", callback_data="edit:year")],
