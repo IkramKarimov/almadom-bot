@@ -8,5 +8,5 @@ services:
     envVars:
       - key: TOKEN
         value: ${TOKEN}
-      - key: WEBHOOK_URL
-        value: ${WEBHOOK_URL}
+     # - key: WEBHOOK_URL
+     #   value: ${WEBHOOK_URL}
