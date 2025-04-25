@@ -1,4 +1,4 @@
-from aiogram import Router
+#from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
@@ -225,6 +225,36 @@ async def process_contact(message: Message, state: FSMContext):
 
     await message.answer("Объявление опубликовано! Спасибо.")
     await state.clear()
+    
+from aiogram.types import Message, CallbackQuery
+from aiogram.fsm.context import FSMContext
+from aiogram import F
+from aiogram.filters import Command
+
+from .keyboards import get_preview_keyboard, edit_fields_keyboard
+from utils.summary import format_summary
+
+@router.message(Command("done"))
+async def show_summary(message: Message, state: FSMContext):
+    data = await state.get_data()
+    summary_text = format_summary(data)
+    await message.answer(summary_text, reply_markup=get_preview_keyboard())
+
+@router.callback_query(F.data == "publish")
+async def publish_object(callback: CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    # здесь позже добавим код публикации в канал
+    await callback.message.answer("Объект опубликован!")
+    await state.clear()
+
+@router.callback_query(F.data == "edit")
+async def edit_object(callback: CallbackQuery):
+    await callback.message.answer("Выберите поле для редактирования:", reply_markup=edit_fields_keyboard())
+
+@router.callback_query(F.data == "cancel")
+async def cancel_object(callback: CallbackQuery, state: FSMContext):
+    await state.clear()
+    await callback.message.answer("Добавление объекта отменено.")
     
 def register_handlers(dp):
     dp.include_router(router)
