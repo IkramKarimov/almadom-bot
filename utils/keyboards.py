@@ -60,6 +60,22 @@ def get_preview_keyboard():
         [InlineKeyboardButton(text="❌ Отменить", callback_data="cancel_publish")]
     ])
     
+# Клавиатура редактирования полей
+def edit_fields_keyboard():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Тип недвижимости", callback_data="edit:type")],
+        [InlineKeyboardButton(text="Район", callback_data="edit:district")],
+        [InlineKeyboardButton(text="Количество комнат", callback_data="edit:rooms")],
+        [InlineKeyboardButton(text="ЖК", callback_data="edit:complex_name")],
+        [InlineKeyboardButton(text="Адрес", callback_data="edit:address")],
+        [InlineKeyboardButton(text="Год постройки", callback_data="edit:year")],
+        [InlineKeyboardButton(text="Цена", callback_data="edit:price")],
+        [InlineKeyboardButton(text="Площадь", callback_data="edit:area")],
+        [InlineKeyboardButton(text="Этажность", callback_data="edit:floor")],
+        [InlineKeyboardButton(text="Медиафайлы", callback_data="edit:media")],
+        [InlineKeyboardButton(text="Назад", callback_data="edit:back_to_preview")]
+    ])
+    
 # Клавиатура отправки контакта
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
