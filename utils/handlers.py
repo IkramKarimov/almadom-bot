@@ -232,7 +232,7 @@ from aiogram import F
 from aiogram.filters import Command
 
 from .keyboards import get_preview_keyboard, edit_fields_keyboard
-from utils.summary import format_summary
+from utils.format_summary import format_summary
 
 @router.message(Command("done"))
 async def show_summary(message: Message, state: FSMContext):
