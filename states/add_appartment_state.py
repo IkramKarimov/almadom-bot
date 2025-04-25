@@ -15,3 +15,7 @@ class AddApartment(StatesGroup):
     media = State()
     
     contact = State()
+    
+class EditFieldState(StatesGroup):
+    field_name = State()
+    new_value = State()
