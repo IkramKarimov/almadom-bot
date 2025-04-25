@@ -1,4 +1,4 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+=from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 # Клавиатура выбора типа недвижимости
 property_type_kb = ReplyKeyboardMarkup(
@@ -63,17 +63,17 @@ def get_preview_keyboard():
 # Клавиатура редактирования полей
 def edit_fields_keyboard():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Тип недвижимости", callback_data="edit:type")],
+        [InlineKeyboardButton(text="Тип недвижимости", callback_data="edit_type")],
         [InlineKeyboardButton(text="Район", callback_data="edit_district")],
         [InlineKeyboardButton(text="Количество комнат", callback_data="edit_rooms")],
-        [InlineKeyboardButton(text="ЖК", callback_data="edit:complex_name")],
-        [InlineKeyboardButton(text="Адрес", callback_data="edit:address")],
-        [InlineKeyboardButton(text="Год постройки", callback_data="edit:year")],
-        [InlineKeyboardButton(text="Цена", callback_data="edit:price")],
-        [InlineKeyboardButton(text="Площадь", callback_data="edit:area")],
-        [InlineKeyboardButton(text="Этажность", callback_data="edit:floor")],
-        [InlineKeyboardButton(text="Медиафайлы", callback_data="edit:media")],
-        [InlineKeyboardButton(text="Назад", callback_data="edit:back_to_preview")]
+        [InlineKeyboardButton(text="ЖК", callback_data="edit_complex_name")],
+        [InlineKeyboardButton(text="Адрес", callback_data="edit_address")],
+        [InlineKeyboardButton(text="Год постройки", callback_data="edit_year")],
+        [InlineKeyboardButton(text="Цена", callback_data="edit_price")],
+        [InlineKeyboardButton(text="Площадь", callback_data="edit_area")],
+        [InlineKeyboardButton(text="Этажность", callback_data="edit_floor")],
+        [InlineKeyboardButton(text="Медиафайлы", callback_data="edit_media")],
+        [InlineKeyboardButton(text="Назад", callback_data="edit_back_to_preview")]
     ])
     
 # Клавиатура отправки контакта
