@@ -68,7 +68,7 @@ def edit_fields_keyboard():
         [InlineKeyboardButton(text="Количество комнат", callback_data="edit_rooms")],
         [InlineKeyboardButton(text="ЖК", callback_data="edit_complex_name")],
         [InlineKeyboardButton(text="Адрес", callback_data="edit_address")],
-        [InlineKeyboardButton(text="Год постройки", callback_data="edit_year")],
+        [InlineKeyboardButton(text="Год постройки", callback_data="edit_year_built")],
         [InlineKeyboardButton(text="Цена", callback_data="edit_price")],
         [InlineKeyboardButton(text="Площадь", callback_data="edit_area")],
         [InlineKeyboardButton(text="Этажность", callback_data="edit_floor")],
