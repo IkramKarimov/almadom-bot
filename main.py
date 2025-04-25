@@ -2,12 +2,8 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
-from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
-from aiohttp import web
 
-from config import TOKEN, WEBHOOK_URL
-from config import WEB_SERVER_HOST, WEB_SERVER_PORT
-
+from config import TOKEN
 from utils.handlers import router
 
 # Настройка логирования
@@ -19,27 +15,13 @@ bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 dp.include_router(router)
 
-async def on_startup(app: web.Application):
-    await bot.set_webhook(f"{WEBHOOK_URL}/{TOKEN}")
-    logger.info("Webhook установлен.")
-
-async def on_shutdown(app: web.Application):
-    await bot.delete_webhook()
-    logger.info("Webhook удален.")
-
-def create_app() -> web.Application:
-    app = web.Application()
-    app.on_startup.append(on_startup)
-    app.on_shutdown.append(on_shutdown)
-
-    # Регистрируем вебхуки для Telegram
-    SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path=f"/{TOKEN}")
-    
-    return app
+async def main():
+    logger.info("Бот запущен в режиме polling")
+    await dp.start_polling(bot)
 
 if __name__ == "__main__":
+    import asyncio
     try:
-        logger.info("Запуск веб-приложения...")
-        web.run_app(create_app(), host=WEB_SERVER_HOST, port=WEB_SERVER_PORT)
-    except Exception as e:
-        logger.error(f"Ошибка при запуске приложения: {e}")
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        logger.info("Бот остановлен.")
