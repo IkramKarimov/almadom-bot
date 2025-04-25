@@ -1,4 +1,4 @@
-=from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 # Клавиатура выбора типа недвижимости
 property_type_kb = ReplyKeyboardMarkup(
