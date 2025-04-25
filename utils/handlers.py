@@ -250,6 +250,35 @@ async def publish_object(callback: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data == "edit")
 async def edit_object(callback: CallbackQuery):
     await callback.message.answer("Выберите поле для редактирования:", reply_markup=edit_fields_keyboard())
+    
+from states.add_appartment_state import EditFieldState, AddApartment
+
+# Обработка выбора поля для редактирования
+@router.callback_query(lambda c: c.data.startswith("edit_"))
+async def edit_field(callback: CallbackQuery, state: FSMContext):
+    field = callback.data.replace("edit_", "")
+    await state.update_data(editing_field=field)
+    await state.set_state(EditFieldState.new_value)
+    await callback.message.answer(f"Введите новое значение для поля: {field}")
+
+
+# Обработка нового значения для выбранного поля
+@router.message(EditFieldState.new_value)
+async def process_new_value(message: Message, state: FSMContext):
+    data = await state.get_data()
+    field = data.get("editing_field")
+    new_value = message.text
+
+    # Обновляем поле в основном состоянии добавления объекта
+    await state.update_data({field: new_value})
+    
+    # Очищаем временное состояние редактирования
+    await state.set_state(AddApartment.confirm)
+
+    # Показываем обновлённую сводку
+    updated_data = await state.get_data()
+    summary = format_summary(updated_data)
+    await message.answer("Обновлено!\n\n" + summary, reply_markup=get_summary_keyboard())
 
 @router.callback_query(F.data == "cancel")
 async def cancel_object(callback: CallbackQuery, state: FSMContext):
