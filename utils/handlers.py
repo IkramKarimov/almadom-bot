@@ -107,15 +107,20 @@ async def ask_media(message: Message, state: FSMContext):
     await state.set_state(AddApartment.media)
     await message.answer("Теперь отправьте фото или видео объекта. Когда закончите, нажмите «Готово».", reply_markup=done_keyboard)
 
-@router.message(AddApartment.media, F.photo | F.video)
-async def collect_media(message: Message, state: FSMContext):
+# === Загрузка новых медиа при редактировании ===
+@router.message(AddApartment.uploading_media, F.content_type.in_({'photo', 'video'}))
+async def process_new_media_upload(message: Message, state: FSMContext):
     data = await state.get_data()
-    media = data.get("media", [])
-    
-    file_id = message.photo[-1].file_id if message.photo else message.video.file_id
-    media.append(file_id)
-    
-    await state.update_data(media=media)
+    media_files = data.get('media_files', [])
+
+    if message.photo:
+        file_id = message.photo[-1].file_id
+        media_files.append(('photo', file_id))
+    elif message.video:
+        file_id = message.video.file_id
+        media_files.append(('video', file_id))
+
+    await state.update_data(media_files=media_files)
     await message.answer("Файл добавлен. Отправьте еще или нажмите «Готово», если закончили.", reply_markup=done_keyboard)
             
 @router.message(AddApartment.floor_info)
