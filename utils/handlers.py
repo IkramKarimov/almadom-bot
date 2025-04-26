@@ -319,7 +319,7 @@ async def cancel_object(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer("Добавление объекта отменено.")
     
 from aiogram.types import Message
-from keyboards import get_summary_keyboard
+from utils.keyboards import get_preview_keyboard
 from utils import format_summary
 
 @router.message()
