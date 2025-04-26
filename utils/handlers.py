@@ -231,12 +231,7 @@ async def show_summary(message: Message, state: FSMContext):
     summary_text = format_summary(data)
     await message.answer(summary_text, reply_markup=get_preview_keyboard())
 
-@router.callback_query(lambda c: c.data == "cancel_publish")
-async def cancel_publish(callback: types.CallbackQuery, state: FSMContext):
-    await callback.message.edit_reply_markup()
-    await callback.message.answer("Публикация отменена. Чтобы начать заново, нажмите /add.")
-    await state.clear()
-
+# Выбор "Редактировать"
 @router.callback_query(F.data == "edit")
 async def edit_object(callback: CallbackQuery):
     await callback.message.answer("Выберите поле для редактирования:", reply_markup=edit_fields_keyboard())
@@ -245,8 +240,7 @@ async def edit_object(callback: CallbackQuery):
 @router.callback_query(lambda c: c.data.startswith("edit_"))
 async def edit_field(callback: CallbackQuery, state: FSMContext):
     field = callback.data.replace("edit_", "")
-    readable_field = FIELD_NAMES.get(field, field)  # читаемое название поля
-    await state.update_data(edit_field=field)  # сохраняем в state, какое поле редактируем
+    await state.update_data(edit_field=field)  # сохраняем текущее поле для редактирования
 
     if field == "district":
         await callback.message.answer("Выберите новый район:", reply_markup=get_district_keyboard())
@@ -254,40 +248,46 @@ async def edit_field(callback: CallbackQuery, state: FSMContext):
         await callback.message.answer("Выберите количество комнат:", reply_markup=get_room_count_keyboard())
     elif field == "year_built":
         await callback.message.answer("Введите новый год постройки (например, 2020):")
+        await state.set_state(EditFieldState.new_value)
     elif field == "price":
         await callback.message.answer("Введите новую цену:")
+        await state.set_state(EditFieldState.new_value)
     elif field == "area":
         await callback.message.answer("Введите новую площадь:")
+        await state.set_state(EditFieldState.new_value)
     elif field == "floor_info":
         await callback.message.answer("Введите новую этажность (например, 5/9):")
+        await state.set_state(EditFieldState.new_value)
     elif field == "complex_name":
         await callback.message.answer("Введите новый ЖК (или напишите '-' если нет):")
+        await state.set_state(EditFieldState.new_value)
     elif field == "address":
         await callback.message.answer("Введите новый адрес:")
+        await state.set_state(EditFieldState.new_value)
     elif field == "media":
         await callback.message.answer("Отправьте новые фото или видео объекта:")
+        # Допустим для медиа другая логика обработки
     else:
         await callback.message.answer(f"Введите новое значение для поля: {field}")
-    if field == "back_to_preview":
-        await message.answer(summary_text, reply_markup=get_preview_keyboard())
+        await state.set_state(EditFieldState.new_value)
 
-# Обработка нового значения для выбранного поля
+# Обработка нового значения после ввода
 @router.message(EditFieldState.new_value)
 async def process_new_value(message: Message, state: FSMContext):
     data = await state.get_data()
-    field = data.get("editing_field")
+    field = data.get("edit_field")  # правильно достаём
     new_value = message.text
 
-    # Обновляем поле в основном состоянии добавления объекта
+    # Обновляем данные
     await state.update_data({field: new_value})
-    
-    # Очищаем временное состояние редактирования
-    await state.set_state(AddApartment.confirm)
 
-    # Показываем обновлённую сводку
+    # Возвращаемся к предпросмотру
     updated_data = await state.get_data()
     summary = format_summary(updated_data)
     await message.answer("Обновлено!\n\n" + summary, reply_markup=get_preview_keyboard())
+
+    # Очищаем промежуточное состояние
+    await state.set_state(AddApartment.confirm)
 
 @router.callback_query(F.data == "cancel")
 async def cancel_object(callback: CallbackQuery, state: FSMContext):
