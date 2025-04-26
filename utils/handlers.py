@@ -294,6 +294,8 @@ async def edit_field(callback: CallbackQuery, state: FSMContext):
         await callback.message.answer("Отправьте новые фото или видео объекта:")
     else:
         await callback.message.answer(f"Введите новое значение для поля: {field}")
+    elif field == "back":
+        await message.answer(summary_text, reply_markup=get_preview_keyboard())
 
 # Обработка нового значения для выбранного поля
 @router.message(EditFieldState.new_value)
