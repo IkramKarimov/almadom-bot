@@ -42,8 +42,8 @@ done_keyboard = ReplyKeyboardMarkup(
 
 confirm_post_kb = ReplyKeyboardMarkup(
     inline_keyboard=[
-        [InlineKeyboardButton(text="Опубликовать", callback_data="confirm_post")],
-        [InlineKeyboardButton(text="Отменить", callback_data="cancel_post")]
+        [KeyboardButton(text="Опубликовать", callback_data="confirm_post")],
+        [KeyboardButton(text="Отменить", callback_data="cancel_post")]
     ]
 )
 
