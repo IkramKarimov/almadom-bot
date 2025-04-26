@@ -16,9 +16,6 @@ from utils.format_summary import format_summary
 
 from states.add_appartment_state import AddApartment, EditFieldState
 
-class EditFieldState(StatesGroup):
-    new_value = State()
-
 FIELD_NAMES = {
     "district": "Район",
     "rooms": "Количество комнат",
