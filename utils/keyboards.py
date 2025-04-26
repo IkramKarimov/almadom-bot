@@ -69,18 +69,18 @@ def edit_fields_keyboard():
         ],
         [
             InlineKeyboardButton(text="📐 Площадь", callback_data="edit_area"),
-            InlineKeyboardButton(text="📆 Год постройки", callback_data="edit_year_built"),
+            InlineKeyboardButton(text="🏗 Год постройки", callback_data="edit_year_built"),
         ],
         [
             InlineKeyboardButton(text="Этажность", callback_data="edit_floor_info"),
-            InlineKeyboardButton(text="Цена", callback_data="edit_price"),
+            InlineKeyboardButton(text="💰Цена", callback_data="edit_price"),
         ],
         [
             InlineKeyboardButton(text="ЖК", callback_data="edit_complex_name"),
             InlineKeyboardButton(text="Адрес", callback_data="edit_address"),
         ],
         [
-            InlineKeyboardButton(text="Фото/Видео", callback_data="edit_media"),
+            InlineKeyboardButton(text="📸 Фото/Видео", callback_data="edit_media"),
         ],
         [
             InlineKeyboardButton(text="⬅️ Назад", callback_data="back_to_preview"),
