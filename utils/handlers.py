@@ -318,5 +318,29 @@ async def cancel_object(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     await callback.message.answer("Добавление объекта отменено.")
     
+from aiogram.types import Message
+from keyboards import get_summary_keyboard
+from utils import format_summary
+
+@router.message()
+async def process_edit(message: Message, state: FSMContext):
+    data = await state.get_data()
+    edit_field = data.get("edit_field")
+
+    if not edit_field:
+        # Если пользователь что-то отправил, но не в режиме редактирования, игнорируем
+        return
+
+    # Сохраняем новое значение в состояние
+    await state.update_data({edit_field: message.text})
+
+    # Очищаем вспомогательное поле edit_field
+    await state.update_data(edit_field=None)
+
+    # Показываем обновленную сводку
+    new_data = await state.get_data()
+    summary_text = format_summary(new_data)
+    await message.answer(f"Данные обновлены:\n\n{summary_text}", reply_markup=get_summary_keyboard())
+    
 def register_handlers(dp):
     dp.include_router(router)
