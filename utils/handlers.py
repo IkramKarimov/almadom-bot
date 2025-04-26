@@ -9,6 +9,7 @@ from utils.keyboards import (property_type_kb,
     get_room_count_keyboard,
     get_preview_keyboard,
     edit_fields_keyboard,
+    confirm_publish_kb,
     get_contact_keyboard,
     done_keyboard,
 )
