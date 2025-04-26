@@ -265,13 +265,35 @@ async def edit_object(callback: CallbackQuery):
     
 from states.add_appartment_state import EditFieldState, AddApartment
 
+from keyboards import get_district_keyboard, get_room_count_keyboard  # подключаем твои клавиатуры выбора
+
 # Обработка выбора поля для редактирования
 @router.callback_query(lambda c: c.data.startswith("edit_"))
 async def edit_field(callback: CallbackQuery, state: FSMContext):
     field = callback.data.replace("edit_", "")
     readable_field = FIELD_NAMES.get(field, field)  # читаемое название поля
     await state.update_data(edit_field=field)  # сохраняем в state, какое поле редактируем
-    await callback.message.answer(f"Введите новое значение для поля: {readable_field}")
+
+    if field == "district":
+        await callback.message.answer("Выберите новый район:", reply_markup=get_districts_keyboard())
+    elif field == "rooms":
+        await callback.message.answer("Выберите количество комнат:", reply_markup=get_rooms_keyboard())
+    elif field == "year_built":
+        await callback.message.answer("Введите новый год постройки (например, 2020):")
+    elif field == "price":
+        await callback.message.answer("Введите новую цену:")
+    elif field == "area":
+        await callback.message.answer("Введите новую площадь:")
+    elif field == "floor_info":
+        await callback.message.answer("Введите новую этажность (например, 5/9):")
+    elif field == "complex_name":
+        await callback.message.answer("Введите новый ЖК (или напишите '-' если нет):")
+    elif field == "address":
+        await callback.message.answer("Введите новый адрес:")
+    elif field == "media":
+        await callback.message.answer("Отправьте новые фото или видео объекта:")
+    else:
+        await callback.message.answer(f"Введите новое значение для поля: {field}")
 
 # Обработка нового значения для выбранного поля
 @router.message(EditFieldState.new_value)
