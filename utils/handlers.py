@@ -275,9 +275,9 @@ async def edit_field(callback: CallbackQuery, state: FSMContext):
     await state.update_data(edit_field=field)  # сохраняем в state, какое поле редактируем
 
     if field == "district":
-        await callback.message.answer("Выберите новый район:", reply_markup=get_districts_keyboard())
+        await callback.message.answer("Выберите новый район:", reply_markup=get_district_keyboard())
     elif field == "rooms":
-        await callback.message.answer("Выберите количество комнат:", reply_markup=get_rooms_keyboard())
+        await callback.message.answer("Выберите количество комнат:", reply_markup=get_room_count_keyboard())
     elif field == "year_built":
         await callback.message.answer("Введите новый год постройки (например, 2020):")
     elif field == "price":
