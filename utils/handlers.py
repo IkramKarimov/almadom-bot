@@ -147,8 +147,6 @@ async def preview_listing(message: Message, state: FSMContext):
                 item = InputMediaVideo(media=media['file_id'])
             else:
                 continue  # вдруг что-то неизвестное, 
-        # Если медиа нет, просто текст отправляем
-        await message.answer(format_summary(data), parse_mode="HTML")
 
     preview_text = (
         f"<b>Предпросмотр квартиры:</b>\n"
