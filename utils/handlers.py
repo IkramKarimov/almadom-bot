@@ -1,16 +1,20 @@
-from aiogram import Router
-from aiogram.types import Message
+from aiogram import Router, F
+from aiogram.types import Message, CallbackQuery, Contact, InputMediaPhoto, InputMediaVideo
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram import Router, F
+from aiogram import types
+from config import CHANNEL_ID
 from utils.keyboards import (property_type_kb, 
     get_district_keyboard,
     get_room_count_keyboard,
     get_preview_keyboard,
+    edit_fields_keyboard,
     get_contact_keyboard,
     done_keyboard,
 )
-from states.add_appartment_state import AddApartment
+from utils.format_summary import format_summary
+
+from states.add_appartment_state import AddApartment, EditFieldState
 
 FIELD_NAMES = {
     "district": "Район",
@@ -160,8 +164,6 @@ async def preview_listing(message: Message, state: FSMContext):
         await message.answer_media_group(media_group)
 
     await message.answer(preview_text, reply_markup=get_preview_keyboard())
-    
-from aiogram import types
 
 @router.callback_query(lambda c: c.data == "confirm_publish")
 async def confirm_publish(callback: types.CallbackQuery, state: FSMContext):
@@ -177,9 +179,6 @@ async def cancel_publish(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_reply_markup()
     await callback.message.answer("Публикация отменена. Чтобы начать заново, нажмите /add.")
     await state.clear()
-    
-from aiogram.types import Contact, InputMediaPhoto, InputMediaVideo
-from config import CHANNEL_ID
 
 @router.message(AddApartment.contact, F.contact)
 async def process_contact(message: Message, state: FSMContext):
@@ -218,14 +217,6 @@ async def process_contact(message: Message, state: FSMContext):
 
     await message.answer("Объявление опубликовано! Спасибо.")
     await state.clear()
-    
-from aiogram.types import Message, CallbackQuery
-from aiogram.fsm.context import FSMContext
-from aiogram import F
-from aiogram.filters import Command
-
-from utils.keyboards import get_preview_keyboard, edit_fields_keyboard
-from utils.format_summary import format_summary
 
 @router.message(Command("done"))
 async def show_summary(message: Message, state: FSMContext):
@@ -243,10 +234,6 @@ async def publish_object(callback: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data == "edit")
 async def edit_object(callback: CallbackQuery):
     await callback.message.answer("Выберите поле для редактирования:", reply_markup=edit_fields_keyboard())
-    
-from states.add_appartment_state import EditFieldState, AddApartment
-
-from utils.keyboards import get_district_keyboard, get_room_count_keyboard  # подключаем твои клавиатуры выбора
 
 # Обработка выбора поля для редактирования
 @router.callback_query(lambda c: c.data.startswith("edit_"))
