@@ -125,7 +125,11 @@ async def process_new_media_upload(message: Message, state: FSMContext):
     await state.update_data(media_group=media_group)
     await message.answer("Файл добавлен. Отправьте еще или нажмите «Готово», если закончили.", reply_markup=done_keyboard)
     
-@router.message(AddApartment.media, F.text.lower() == "готово")
+@router.callback_query(lambda c: c.data == "add_more_media")
+async def add_more_media(callback: CallbackQuery):
+    await callback.message.answer("Отправьте ещё фото или видео.")
+
+@router.message(AddApartment.media, F.text.lower() == "✅ готово")
 async def done_from_button(message: Message, state: FSMContext):
     await preview_listing(message, state)
     
