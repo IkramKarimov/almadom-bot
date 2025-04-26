@@ -57,7 +57,7 @@ def get_preview_keyboard():
     
 # Клавиатура редактирования полей
 def edit_fields_keyboard():
-    keyboard = InlineKeyboardMarkup(inline_keyboard=
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text="🏠 Тип недвижимости", callback_data="edit_type")
         ],
@@ -83,7 +83,7 @@ def edit_fields_keyboard():
         [
             InlineKeyboardButton(text="⬅️ Назад", callback_data="back_to_preview"),
         ]
-    )
+    ])
     return keyboard
     
 # Клавиатура добавления еще фото
