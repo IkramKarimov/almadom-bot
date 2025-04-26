@@ -2,7 +2,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 # Клавиатура выбора типа недвижимости
 property_type_kb = ReplyKeyboardMarkup(
-    keyboard=[
+    keyboard=
         [KeyboardButton(text="Квартира")],
         [KeyboardButton(text="Дом")],
         [KeyboardButton(text="Таунхаус")],
