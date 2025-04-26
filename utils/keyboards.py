@@ -32,7 +32,7 @@ def get_room_count_keyboard():
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
     
 # Клавиатура "Готово"
-def done_keyboard = ReplyKeyboardMarkup(
+done_keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="Готово")]
     ],
