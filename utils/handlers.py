@@ -149,8 +149,6 @@ async def preview_listing(message: Message, state: FSMContext):
         f"<b>Цена:</b> {format(data.get('price'), ',').replace(',', '.')} ₸"
     )
 
-    from aiogram.types import InputMediaPhoto, InputMediaVideo
-
     media = data.get("media", [])
     media_group = []
 
