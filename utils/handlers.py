@@ -317,10 +317,6 @@ async def process_new_value(message: Message, state: FSMContext):
 async def cancel_object(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     await callback.message.answer("Добавление объекта отменено.")
-    
-from aiogram.types import Message
-from utils.keyboards import get_preview_keyboard
-from utils import format_summary
 
 def register_handlers(dp):
     dp.include_router(router)
