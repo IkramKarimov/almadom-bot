@@ -40,7 +40,7 @@ done_keyboard = ReplyKeyboardMarkup(
     one_time_keyboard=True
 )
 
-def confirm_post_kb = InlineKeyboardMarkup(
+confirm_post_kb = InlineKeyboardMarkup(
     inline_keyboard=[
         [InlineKeyboardButton(text="Опубликовать", callback_data="confirm_post")],
         [InlineKeyboardButton(text="Отменить", callback_data="cancel_post")]
