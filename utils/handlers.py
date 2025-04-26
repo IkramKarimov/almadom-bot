@@ -269,10 +269,9 @@ from states.add_appartment_state import EditFieldState, AddApartment
 @router.callback_query(lambda c: c.data.startswith("edit_"))
 async def edit_field(callback: CallbackQuery, state: FSMContext):
     field = callback.data.replace("edit_", "")
-    await state.update_data(editing_field=field)
-    await state.set_state(EditFieldState.new_value)
-    await callback.message.answer(f"Введите новое значение для поля: {field}")
-
+    readable_field = FIELD_NAMES.get(field, field)  # читаемое название поля
+    await state.update_data(edit_field=field)  # сохраняем в state, какое поле редактируем
+    await callback.message.answer(f"Введите новое значение для поля: {readable_field}")
 
 # Обработка нового значения для выбранного поля
 @router.message(EditFieldState.new_value)
