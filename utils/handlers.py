@@ -311,7 +311,7 @@ async def process_new_value(message: Message, state: FSMContext):
     # Показываем обновлённую сводку
     updated_data = await state.get_data()
     summary = format_summary(updated_data)
-    await message.answer("Обновлено!\n\n" + summary, reply_markup=get_summary_keyboard())
+    await message.answer("Обновлено!\n\n" + summary, reply_markup=get_preview_keyboard())
 
 @router.callback_query(F.data == "cancel")
 async def cancel_object(callback: CallbackQuery, state: FSMContext):
