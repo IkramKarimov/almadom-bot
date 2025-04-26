@@ -146,17 +146,7 @@ async def preview_listing(message: Message, state: FSMContext):
             elif media['type'] == 'video':
                 item = InputMediaVideo(media=media['file_id'])
             else:
-                continue  # вдруг что-то неизвестное, пропустим
-
-            # Добавляем описание только к первому элементу
-            if idx == 0:
-                item.caption = format_summary(data)
-                item.parse_mode = "HTML"
-
-            media_group.append(item)
-
-        await message.answer_media_group(media_group)
-    else:
+                continue  # вдруг что-то неизвестное, 
         # Если медиа нет, просто текст отправляем
         await message.answer(format_summary(data), parse_mode="HTML")
 
@@ -169,7 +159,7 @@ async def preview_listing(message: Message, state: FSMContext):
         f"<b>ЖК:</b> {data.get('complex_name', '—')}\n"
         f"<b>Адрес:</b> {data.get('address')}\n"
         f"<b>Этажность:</b> {data.get('floor_info', '—')}\n"
-        f"<b>Цена:</b> {format(data.get('price'), ',').replace(',', '.')} ₸"
+        f"<b>Цена:</b> {format(data.get('price'), ',').replace(',', ' ')} ₸"
     )
 
     media = data.get("media", [])
