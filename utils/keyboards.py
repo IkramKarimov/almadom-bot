@@ -7,7 +7,7 @@ property_type_kb = ReplyKeyboardMarkup(
         [KeyboardButton(text="Дом")],
         [KeyboardButton(text="Таунхаус")],
         [KeyboardButton(text="Коммерческая недвижимость")],
-        [KeyboardButton(text="Участок")]
+        [KeyboardButton(text="Участок")],
     ]
     resize_keyboard=True,
     one_time_keyboard=True
