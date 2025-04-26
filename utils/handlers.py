@@ -1,4 +1,4 @@
-#from aiogram import Router
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
@@ -11,6 +11,18 @@ from utils.keyboards import (property_type_kb,
     done_keyboard,
 )
 from states.add_appartment_state import AddApartment
+
+FIELD_NAMES = {
+    "district": "Район",
+    "rooms": "Количество комнат",
+    "complex_name": "Жилой комплекс",
+    "address": "Адрес",
+    "year_built": "Год постройки",
+    "price": "Цена",
+    "area": "Площадь",
+    "floor": "Этажность",
+    "media": "Медиа",
+}
 
 router = Router()
 
