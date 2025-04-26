@@ -62,19 +62,34 @@ def get_preview_keyboard():
     
 # Клавиатура редактирования полей
 def edit_fields_keyboard():
-    return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Тип недвижимости", callback_data="edit_type")],
-        [InlineKeyboardButton(text="Район", callback_data="edit_district")],
-        [InlineKeyboardButton(text="Количество комнат", callback_data="edit_rooms")],
-        [InlineKeyboardButton(text="ЖК", callback_data="edit_complex_name")],
-        [InlineKeyboardButton(text="Адрес", callback_data="edit_address")],
-        [InlineKeyboardButton(text="Год постройки", callback_data="edit_year_built")],
-        [InlineKeyboardButton(text="Цена", callback_data="edit_price")],
-        [InlineKeyboardButton(text="Площадь", callback_data="edit_area")],
-        [InlineKeyboardButton(text="Этажность", callback_data="edit_floor")],
-        [InlineKeyboardButton(text="Медиафайлы", callback_data="edit_media")],
-        [InlineKeyboardButton(text="Назад", callback_data="edit_back_to_preview")]
+    keyboard = InlineKeyboardMarkup(inline_keyboard=
+        [
+            InlineKeyboardButton(text="Тип недвижимости", callback_data="edit_type")
+        ],
+        [
+            InlineKeyboardButton(text="Район", callback_data="edit_district"),
+            InlineKeyboardButton(text="Комнаты", callback_data="edit_rooms"),
+        ],
+        [
+            InlineKeyboardButton(text="Площадь", callback_data="edit_area"),
+            InlineKeyboardButton(text="Год постройки", callback_data="edit_year_built"),
+        ],
+        [
+            InlineKeyboardButton(text="Этажность", callback_data="edit_floor_info"),
+            InlineKeyboardButton(text="Цена", callback_data="edit_price"),
+        ],
+        [
+            InlineKeyboardButton(text="ЖК", callback_data="edit_complex_name"),
+            InlineKeyboardButton(text="Адрес", callback_data="edit_address"),
+        ],
+        [
+            InlineKeyboardButton(text="Фото/Видео", callback_data="edit_media"),
+        ],
+        [
+            InlineKeyboardButton(text="⬅️ Назад", callback_data="back_to_preview"),
+        ]
     ])
+    return keyboard
     
 # Клавиатура отправки контакта
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
