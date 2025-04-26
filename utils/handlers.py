@@ -182,13 +182,7 @@ async def confirm_publish(callback: types.CallbackQuery, state: FSMContext):
         reply_markup=get_contact_keyboard()
     )
     await state.set_state(AddApartment.contact)
-
-@router.callback_query(lambda c: c.data == "cancel_publish")
-async def cancel_publish(callback: types.CallbackQuery, state: FSMContext):
-    await callback.message.edit_reply_markup()
-    await callback.message.answer("Публикация отменена. Чтобы начать заново, нажмите /add.")
-    await state.clear()
-
+    
 @router.message(AddApartment.contact, F.contact)
 async def process_contact(message: Message, state: FSMContext):
     contact = message.contact.phone_number
@@ -238,6 +232,12 @@ async def publish_object(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     # здесь позже добавим код публикации в канал
     await callback.message.answer("Объект опубликован!")
+    await state.clear()
+
+@router.callback_query(lambda c: c.data == "cancel_publish")
+async def cancel_publish(callback: types.CallbackQuery, state: FSMContext):
+    await callback.message.edit_reply_markup()
+    await callback.message.answer("Публикация отменена. Чтобы начать заново, нажмите /add.")
     await state.clear()
 
 @router.callback_query(F.data == "edit")
