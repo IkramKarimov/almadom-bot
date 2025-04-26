@@ -243,7 +243,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram import F
 from aiogram.filters import Command
 
-from .keyboards import get_preview_keyboard, edit_fields_keyboard
+from utils.keyboards import get_preview_keyboard, edit_fields_keyboard
 from utils.format_summary import format_summary
 
 @router.message(Command("done"))
@@ -265,7 +265,7 @@ async def edit_object(callback: CallbackQuery):
     
 from states.add_appartment_state import EditFieldState, AddApartment
 
-from keyboards import get_district_keyboard, get_room_count_keyboard  # подключаем твои клавиатуры выбора
+from utils.keyboards import get_district_keyboard, get_room_count_keyboard  # подключаем твои клавиатуры выбора
 
 # Обработка выбора поля для редактирования
 @router.callback_query(lambda c: c.data.startswith("edit_"))
