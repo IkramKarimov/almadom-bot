@@ -108,7 +108,7 @@ async def ask_media(message: Message, state: FSMContext):
     await message.answer("Теперь отправьте фото или видео объекта. Когда закончите, нажмите «Готово».", reply_markup=done_keyboard)
 
 # === Загрузка новых медиа при редактировании ===
-@router.message(AddApartment.uploading_media, F.content_type.in_({'photo', 'video'}))
+@router.message(AddApartment.media, F.content_type.in_({'photo', 'video'}))
 async def process_new_media_upload(message: Message, state: FSMContext):
     data = await state.get_data()
     media_files = data.get('media_files', [])
