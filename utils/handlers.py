@@ -174,7 +174,8 @@ async def preview_listing(message: Message, state: FSMContext):
 
     await message.answer(preview_text, reply_markup=get_preview_keyboard())
 
-@router.callback_query(lambda c: c.data == "confirm_publish")
+# ====== ПОДТВЕРЖДЕНИЕ ПУБЛИКАЦИИ ======
+@router.callback_query(F.data == "confirm_publish")
 async def confirm_publish(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_reply_markup()
     await callback.message.answer(
@@ -182,17 +183,16 @@ async def confirm_publish(callback: types.CallbackQuery, state: FSMContext):
         reply_markup=get_contact_keyboard()
     )
     await state.set_state(AddApartment.contact)
-    
+
+# ====== ПОЛУЧЕНИЕ КОНТАКТА И ПУБЛИКАЦИЯ ======
 @router.message(AddApartment.contact, F.contact)
 async def process_contact(message: Message, state: FSMContext):
     contact = message.contact.phone_number
     await state.update_data(contact=contact)
 
     data = await state.get_data()
-    # Здесь можно сформировать и отправить финальное сообщение в канал или администратору
-    await message.answer("Контакт получен, объект отправлен на модерацию!")
-    await state.clear()
 
+    # Формируем текст поста
     post_text = (
         f"<b>Новое объявление:</b>\n"
         f"<b>Район:</b> {data.get('district')}\n"
@@ -206,33 +206,30 @@ async def process_contact(message: Message, state: FSMContext):
         f"<b>Контакт:</b> {contact}"
     )
 
+    # Формируем медиагруппу
     media_group = []
-    for file_id in data.get("media", []):
-        if file_id.startswith("AgAC"):  # Фото
-            media_group.append(InputMediaPhoto(media=file_id))
-        elif file_id.startswith("BAAC") or file_id.startswith("DQAC"):  # Видео
-            media_group.append(InputMediaVideo(media=file_id))
+    for media in data.get("media_group", []):
+        if media["type"] == "photo":
+            media_group.append(InputMediaPhoto(media=media["file_id"]))
+        elif media["type"] == "video":
+            media_group.append(InputMediaVideo(media=media["file_id"]))
 
+    # Публикация в канал
     if media_group:
         await message.bot.send_media_group(chat_id=CHANNEL_ID, media=media_group)
-
+    
     await message.bot.send_message(chat_id=CHANNEL_ID, text=post_text)
 
+    # Ответ пользователю
     await message.answer("Объявление опубликовано! Спасибо.")
     await state.clear()
 
+# ====== ПРЕДПРОСМОТР ======
 @router.message(Command("done"))
 async def show_summary(message: Message, state: FSMContext):
     data = await state.get_data()
     summary_text = format_summary(data)
     await message.answer(summary_text, reply_markup=get_preview_keyboard())
-
-@router.callback_query(F.data == "publish")
-async def publish_object(callback: CallbackQuery, state: FSMContext):
-    data = await state.get_data()
-    # здесь позже добавим код публикации в канал
-    await callback.message.answer("Объект опубликован!")
-    await state.clear()
 
 @router.callback_query(lambda c: c.data == "cancel_publish")
 async def cancel_publish(callback: types.CallbackQuery, state: FSMContext):
