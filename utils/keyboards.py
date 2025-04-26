@@ -82,7 +82,8 @@ def edit_fields_keyboard():
         ],
         [
             InlineKeyboardButton(text="⬅️ Назад", callback_data="back_to_preview"),
-        ])
+        ]
+    )
     return keyboard
     
 # Клавиатура добавления еще фото
