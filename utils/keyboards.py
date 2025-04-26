@@ -31,9 +31,8 @@ def get_room_count_keyboard():
     ]
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
     
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-
-done_keyboard = ReplyKeyboardMarkup(
+# Клавиатура "Готово"
+def done_keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="Готово")]
     ],
@@ -41,16 +40,12 @@ done_keyboard = ReplyKeyboardMarkup(
     one_time_keyboard=True
 )
 
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-
 confirm_post_kb = InlineKeyboardMarkup(
     inline_keyboard=[
         [InlineKeyboardButton(text="Опубликовать", callback_data="confirm_post")],
         [InlineKeyboardButton(text="Отменить", callback_data="cancel_post")]
     ]
 )
-
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Клавиатура предпросмотра
 def get_preview_keyboard():
@@ -64,15 +59,15 @@ def get_preview_keyboard():
 def edit_fields_keyboard():
     keyboard = InlineKeyboardMarkup(inline_keyboard=
         [
-            InlineKeyboardButton(text="Тип недвижимости", callback_data="edit_type")
+            InlineKeyboardButton(text="🏠 Тип недвижимости", callback_data="edit_type")
         ],
         [
-            InlineKeyboardButton(text="Район", callback_data="edit_district"),
-            InlineKeyboardButton(text="Комнаты", callback_data="edit_rooms"),
+            InlineKeyboardButton(text="📍 Район", callback_data="edit_district"),
+            InlineKeyboardButton(text="🛏️ Комнаты", callback_data="edit_rooms"),
         ],
         [
-            InlineKeyboardButton(text="Площадь", callback_data="edit_area"),
-            InlineKeyboardButton(text="Год постройки", callback_data="edit_year_built"),
+            InlineKeyboardButton(text="📐 Площадь", callback_data="edit_area"),
+            InlineKeyboardButton(text="📆 Год постройки", callback_data="edit_year_built"),
         ],
         [
             InlineKeyboardButton(text="Этажность", callback_data="edit_floor_info"),
@@ -91,9 +86,15 @@ def edit_fields_keyboard():
     ])
     return keyboard
     
+# Клавиатура добавления еще фото
+def add_more_media_keyboard():
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="➕ Добавить ещё фото/видео", callback_data="add_more_media")],
+        [InlineKeyboardButton(text="✅ Готово", callback_data="done_uploading")]
+    ])
+    return keyboard
+    
 # Клавиатура отправки контакта
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-
 def get_contact_keyboard():
     return ReplyKeyboardMarkup(
         keyboard=[
