@@ -136,6 +136,29 @@ logger = logging.getLogger(__name__)
 @router.message(AddApartment.media, F.text == "Готово")
 async def preview_listing(message: Message, state: FSMContext):
     data = await state.get_data()
+    media_files = data.get('media_group', [])
+    
+    if media_files:
+        media_group = []
+        for idx, media in enumerate(media_files):
+            if media['type'] == 'photo':
+                item = InputMediaPhoto(media=media['file_id'])
+            elif media['type'] == 'video':
+                item = InputMediaVideo(media=media['file_id'])
+            else:
+                continue  # вдруг что-то неизвестное, пропустим
+
+            # Добавляем описание только к первому элементу
+            if idx == 0:
+                item.caption = format_summary(data)
+                item.parse_mode = "HTML"
+
+            media_group.append(item)
+
+        await message.answer_media_group(media_group)
+    else:
+        # Если медиа нет, просто текст отправляем
+        await message.answer(format_summary(data), parse_mode="HTML")
 
     preview_text = (
         f"<b>Предпросмотр квартиры:</b>\n"
