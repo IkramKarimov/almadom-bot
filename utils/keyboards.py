@@ -1,4 +1,5 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Клавиатура выбора типа недвижимости
 property_type_kb = ReplyKeyboardMarkup(
@@ -40,12 +41,13 @@ done_keyboard = ReplyKeyboardMarkup(
     one_time_keyboard=True
 )
 
-def confirm_post_kb = InlineKeyboardMarkup(
-    inline_keyboard=[
-        [InlineKeyboardButton(text="Опубликовать", callback_data="confirm_post")],
-        [InlineKeyboardButton(text="Отменить", callback_data="cancel_post")]
-    ]
-)
+def confirm_post_kb():
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="Опубликовать", callback_data="confirm_post")],
+            [InlineKeyboardButton(text="Отменить", callback_data="cancel_post")]
+        ]
+    )
 
 # Клавиатура предпросмотра
 def get_preview_keyboard():
