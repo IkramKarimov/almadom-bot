@@ -117,10 +117,10 @@ async def process_new_media_upload(message: Message, state: FSMContext):
 
     if message.photo:
         file_id = message.photo[-1].file_id
-        media_files.append(('photo', file_id))
+        media_group.append(('photo', file_id))
     elif message.video:
         file_id = message.video.file_id
-        media_files.append(('video', file_id))
+        media_group.append(('video', file_id))
 
     await state.update_data(media_files=media_files)
     await message.answer("Файл добавлен. Отправьте еще или нажмите «Готово», если закончили.", reply_markup=done_keyboard)
