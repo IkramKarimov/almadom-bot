@@ -2,13 +2,13 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 # Клавиатура выбора типа недвижимости
 property_type_kb = ReplyKeyboardMarkup(
-    keyboard=
+    keyboard=[
         [KeyboardButton(text="Квартира")],
         [KeyboardButton(text="Дом")],
         [KeyboardButton(text="Таунхаус")],
         [KeyboardButton(text="Коммерческая недвижимость")],
         [KeyboardButton(text="Участок")]
-    ],
+    ]
     resize_keyboard=True,
     one_time_keyboard=True
 )
