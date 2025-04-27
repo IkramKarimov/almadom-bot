@@ -65,7 +65,7 @@ async def process_add_property(callback: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data == "help")
 async def process_help(callback: CallbackQuery):
     await callback.message.answer(
-        "ℹ️ Если вам нужна помощь, обратитесь к нашему администратору: @ваш_ник\n\n"
+        "ℹ️ Если вам нужна помощь, обратитесь к нашему администратору: @ikramkir\n\n"
         "Или напишите сюда ваш вопрос!",
         parse_mode="HTML"
     )
