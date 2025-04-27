@@ -204,18 +204,18 @@ async def process_contact(message: Message, state: FSMContext):
     data = await state.get_data()
 
     # Формируем текст поста
-post_text = (
-    f"<b>🏡 Новое объявление:</b>\n"
-    f"📍 <b>Район:</b> {data.get('district')}\n"
-    f"🛏 <b>Комнаты:</b> {data.get('rooms')}\n"
-    f"📐 <b>Площадь:</b> {data.get('area')} м²\n"
-    f"🏗 <b>Год постройки:</b> {data.get('year_built')}\n"
-    f"🏢 <b>ЖК:</b> {data.get('complex_name', '—')}\n"
-    f"📫 <b>Адрес:</b> {data.get('address')}\n"
-    f"🏢 <b>Этажность:</b> {data.get('floor_info')}\n"
-    f"💰 <b>Цена:</b> {format(data.get('price'), ',').replace(',', '.')} ₸\n"
-    f"☎️ <b>Контакт:</b> {contact}"
-)
+    post_text = (
+        f"<b>🏡 Новое объявление:</b>\n"
+        f"📍 <b>Район:</b> {data.get('district')}\n"
+        f"🛏 <b>Комнаты:</b> {data.get('rooms')}\n"
+        f"📐 <b>Площадь:</b> {data.get('area')} м²\n"
+        f"🏗 <b>Год постройки:</b> {data.get('year_built')}\n"
+        f"🏢 <b>ЖК:</b> {data.get('complex_name', '—')}\n"
+        f"📫 <b>Адрес:</b> {data.get('address')}\n"
+        f"🏢 <b>Этажность:</b> {data.get('floor_info')}\n"
+        f"💰 <b>Цена:</b> {format(data.get('price'), ',').replace(',', '.')} ₸\n"
+        f"☎️ <b>Контакт:</b> {contact}"
+    )
 
     # Формируем медиагруппу
     media_group = []
