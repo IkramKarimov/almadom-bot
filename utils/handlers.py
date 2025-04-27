@@ -35,6 +35,21 @@ router = Router()
 
 from aiogram import F
 
+# Когда человек начинает добавлять объект — ставим черновик
+await state.update_data(draft=True)
+
+# Когда человек публикует или отменяет — убираем черновик
+await state.update_data(draft=False)
+
+# И отдельная проверка в /start:
+@router.message(Command("start"))
+async def cmd_start(message: Message, state: FSMContext):
+    data = await state.get_data()
+    if data.get("draft"):
+        await message.answer("Вы начали добавление объекта. Хотите продолжить?", reply_markup=resume_or_start_over_keyboard())
+    else:
+        await message.answer("Добро пожаловать!", reply_markup=start_menu_keyboard())
+
 @router.message(Command("start"))
 async def cmd_start_message(message: Message, state: FSMContext):
     await state.clear()
