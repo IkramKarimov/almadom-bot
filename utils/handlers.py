@@ -31,6 +31,19 @@ FIELD_NAMES = {
     "media": "Медиа",
 }
 
+def generate_preview_text(data: dict) -> str:
+    return (
+        f"<b>🏠 Предпросмотр квартиры:</b>\n\n"
+        f"📍 <b>Район:</b> {data.get('district', '—')}\n"
+        f"🛏️ <b>Количество комнат:</b> {data.get('rooms', '—')}\n"
+        f"📐 <b>Площадь:</b> {data.get('area', '—')} м²\n"
+        f"🏗️ <b>Год постройки:</b> {data.get('year_built', '—')}\n"
+        f"🏢 <b>ЖК:</b> {data.get('complex_name', '—')}\n"
+        f"📍 <b>Адрес:</b> {data.get('address', '—')}\n"
+        f"🏢 <b>Этажность:</b> {data.get('floor_info', '—')}\n"
+        f"💵 <b>Цена:</b> {format(data.get('price', 0), ',').replace(',', ' ')} ₸"
+    )
+
 router = Router()
 
 from aiogram import F
@@ -188,17 +201,8 @@ async def preview_listing(message: Message, state: FSMContext):
         elif file_id.startswith("BAAC") or file_id.startswith("DQAC"):  # Видео
             media_group.append(InputMediaVideo(media=file_id))
 
-    preview_text = (
-        f"<b>Предпросмотр квартиры:</b>\n"
-        f"<b>Район:</b> {data.get('district')}\n"
-        f"<b>Количество комнат:</b> {data.get('rooms')}\n"
-        f"<b>Площадь:</b> {data.get('area')} м²\n"
-        f"<b>Год постройки:</b> {data.get('year_built')}\n"
-        f"<b>ЖК:</b> {data.get('complex_name', '—')}\n"
-        f"<b>Адрес:</b> {data.get('address')}\n"
-        f"<b>Этажность:</b> {data.get('floor_info', '—')}\n"
-        f"<b>Цена:</b> {format(data.get('price'), ',').replace(',', ' ')} ₸"
-    )
+    preview_text = generate_preview_text(data)
+    await message.answer(preview_text, reply_markup=get_preview_keyboard())
 
     if media_group:
         await message.answer_media_group(media_group)
