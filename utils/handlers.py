@@ -33,14 +33,27 @@ FIELD_NAMES = {
 
 router = Router()
 
+from aiogram import F
+
 @router.message(Command("start"))
-async def cmd_start(message: Message):
-    await message.answer("Добро пожаловать в АлмаДомБот!")
-    
-@router.callback_query(lambda c: c.data == "start")
-async def cmd_start(callback: CallbackQuery, state: FSMContext):
+async def cmd_start_message(message: Message, state: FSMContext):
     await state.clear()
-    await callback.message.answer("Давайте добавим новый объект!", reply_markup=start_menu_keyboard())
+    await message.answer(
+        "👋 Добро пожаловать в <b>АлмаДомБот</b>!\n\n"
+        "Что вы хотите сделать?",
+        reply_markup=start_menu_keyboard(),
+        parse_mode="HTML"
+    )
+
+@router.callback_query(F.data == "start")
+async def cmd_start_callback(callback: CallbackQuery, state: FSMContext):
+    await state.clear()
+    await callback.message.answer(
+        "👋 Добро пожаловать в <b>АлмаДомБот</b>!\n\n"
+        "Что вы хотите сделать?",
+        reply_markup=start_menu_keyboard(),
+        parse_mode="HTML"
+    )
     
 @router.message(Command("add"))
 async def choose_property_type(message: Message):
