@@ -37,7 +37,7 @@ async def cmd_start(message: Message):
     await message.answer("Добро пожаловать в АлмаДомБот!")
     
 @router.callback_query(lambda c: c.data == "start")
-async def start_adding(callback: CallbackQuery, state: FSMContext):
+async def start(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     await callback.message.answer("Давайте добавим новый объект!", reply_markup=property_type_kb())
     
