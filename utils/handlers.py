@@ -55,9 +55,20 @@ async def cmd_start_callback(callback: CallbackQuery, state: FSMContext):
         parse_mode="HTML"
     )
     
-@router.message(Command("add"))
-async def choose_property_type(message: Message):
-    await message.answer("Выберите тип недвижимости:", reply_markup=property_type_kb)
+@router.callback_query(F.data == "add_property")
+async def process_add_property(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer(
+        "Выберите тип недвижимости:",
+        reply_markup=property_type_kb  # <-- твоя клавиатура выбора типа объекта
+    )
+
+@router.callback_query(F.data == "help")
+async def process_help(callback: CallbackQuery):
+    await callback.message.answer(
+        "ℹ️ Если вам нужна помощь, обратитесь к нашему администратору: @ваш_ник\n\n"
+        "Или напишите сюда ваш вопрос!",
+        parse_mode="HTML"
+    )
 
 @router.message(F.text == "Квартира")
 async def start_flat_creation(message: Message, state: FSMContext):
