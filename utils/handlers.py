@@ -267,13 +267,6 @@ async def process_contact(message: Message, state: FSMContext):
     await message.answer("Объявление опубликовано! Спасибо.")
     await state.clear()
 
-# ====== ПРЕДПРОСМОТР ======
-@router.message(Command("done"))
-async def show_summary(message: Message, state: FSMContext):
-    data = await state.get_data()
-    summary_text = format_summary(data)
-    await message.answer(summary_text, reply_markup=get_preview_keyboard())
-
 # Выбор "Редактировать"
 @router.callback_query(F.data == "edit")
 async def edit_object(callback: CallbackQuery):
