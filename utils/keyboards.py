@@ -53,7 +53,7 @@ def get_room_count_keyboard():
 # Клавиатура "Готово"
 done_keyboard = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="Готово")]
+        [KeyboardButton(text="✅ Готово")]
     ],
     resize_keyboard=True,
     one_time_keyboard=True
