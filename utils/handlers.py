@@ -179,17 +179,14 @@ logger = logging.getLogger(__name__)
 @router.message(AddApartment.media, F.text == "Готово")
 async def preview_listing(message: Message, state: FSMContext):
     data = await state.get_data()
-    media_files = data.get('media_group', [])
+    media_files = data.get('media', [])  # исправил на правильный ключ 'media'
     
-    if media_files:
-        media_group = []
-        for idx, media in enumerate(media_files):
-            if media['type'] == 'photo':
-                item = InputMediaPhoto(media=media['file_id'])
-            elif media['type'] == 'video':
-                item = InputMediaVideo(media=media['file_id'])
-            else:
-                continue  # вдруг что-то неизвестное, 
+    media_group = []
+    for file_id in media_files:
+        if file_id.startswith("AgAC"):  # Фото
+            media_group.append(InputMediaPhoto(media=file_id))
+        elif file_id.startswith("BAAC") or file_id.startswith("DQAC"):  # Видео
+            media_group.append(InputMediaVideo(media=file_id))
 
     preview_text = (
         f"<b>Предпросмотр квартиры:</b>\n"
@@ -202,15 +199,6 @@ async def preview_listing(message: Message, state: FSMContext):
         f"<b>Этажность:</b> {data.get('floor_info', '—')}\n"
         f"<b>Цена:</b> {format(data.get('price'), ',').replace(',', ' ')} ₸"
     )
-
-    media = data.get("media", [])
-    media_group = []
-
-    for file_id in media:
-        if file_id.startswith("AgAC"):  # Фото
-            media_group.append(InputMediaPhoto(media=file_id))
-        elif file_id.startswith("BAAC") or file_id.startswith("DQAC"):  # Видео
-            media_group.append(InputMediaVideo(media=file_id))
 
     if media_group:
         await message.answer_media_group(media_group)
