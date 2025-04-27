@@ -1,6 +1,14 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+# Клавиатура стартового меню
+def start_menu_keyboard():
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="➕ Добавить объект", callback_data="start_add")],
+        [InlineKeyboardButton(text="ℹ️ Помощь", callback_data="help")],
+    ])
+    return keyboard
+
 # Клавиатура выбора типа недвижимости
 property_type_kb = ReplyKeyboardMarkup(
     keyboard=[
