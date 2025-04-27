@@ -43,6 +43,20 @@ def generate_preview_text(data: dict) -> str:
         f"🏢 <b>Этажность:</b> {data.get('floor_info', '—')}\n"
         f"💵 <b>Цена:</b> {format(data.get('price', 0), ',').replace(',', ' ')} ₸"
     )
+    
+def generate_post_text(data: dict, contact: str) -> str:
+    return (
+        f"<b>🏠 Новое объявление:</b>\n\n"
+        f"📍 <b>Район:</b> {data.get('district', '—')}\n"
+        f"🛏️ <b>Количество комнат:</b> {data.get('rooms', '—')}\n"
+        f"📐 <b>Площадь:</b> {data.get('area', '—')} м²\n"
+        f"🏗️ <b>Год постройки:</b> {data.get('year_built', '—')}\n"
+        f"🏢 <b>ЖК:</b> {data.get('complex_name', '—')}\n"
+        f"📍 <b>Адрес:</b> {data.get('address', '—')}\n"
+        f"🏢 <b>Этажность:</b> {data.get('floor_info', '—')}\n"
+        f"💵 <b>Цена:</b> {format(data.get('price', 0), ',').replace(',', ' ')} ₸\n\n"
+        f"☎️ <b>Контакт:</b> {contact}"
+    )
 
 router = Router()
 
@@ -228,18 +242,8 @@ async def process_contact(message: Message, state: FSMContext):
     data = await state.get_data()
 
     # Формируем текст поста
-    post_text = (
-        f"<b>🏡 Новое объявление:</b>\n"
-        f"📍 <b>Район:</b> {data.get('district')}\n"
-        f"🛏 <b>Комнаты:</b> {data.get('rooms')}\n"
-        f"📐 <b>Площадь:</b> {data.get('area')} м²\n"
-        f"🏗 <b>Год постройки:</b> {data.get('year_built')}\n"
-        f"🏢 <b>ЖК:</b> {data.get('complex_name', '—')}\n"
-        f"📫 <b>Адрес:</b> {data.get('address')}\n"
-        f"🏢 <b>Этажность:</b> {data.get('floor_info')}\n"
-        f"💰 <b>Цена:</b> {format(data.get('price'), ',').replace(',', '.')} ₸\n"
-        f"☎️ <b>Контакт:</b> {contact}"
-    )
+    post_text = generate_post_text(data, contact)
+    await bot.send_message(chat_id=CHANNEL_ID, text=post_text)
 
     # Формируем медиагруппу
     media_group = []
