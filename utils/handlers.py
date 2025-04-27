@@ -4,7 +4,8 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram import types
 from config import CHANNEL_ID
-from utils.keyboards import (property_type_kb, 
+from utils.keyboards import (start_menu_keyboard,
+    property_type_kb, 
     get_district_keyboard,
     get_room_count_keyboard,
     get_preview_keyboard,
@@ -39,7 +40,7 @@ async def cmd_start(message: Message):
 @router.callback_query(lambda c: c.data == "start")
 async def start(callback: CallbackQuery, state: FSMContext):
     await state.clear()
-    await callback.message.answer("Давайте добавим новый объект!", reply_markup=property_type_kb())
+    await callback.message.answer("Давайте добавим новый объект!", reply_markup=start_menu_keyboard())
     
 @router.message(Command("add"))
 async def choose_property_type(message: Message):
