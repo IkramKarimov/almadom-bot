@@ -9,6 +9,16 @@ def start_menu_keyboard():
     ])
     return keyboard
 
+# Клавиатура проверки черновиков
+continue_draft_kb = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text="✅ Продолжить черновик", callback_data="continue_draft"),
+            InlineKeyboardButton(text="❌ Начать заново", callback_data="start_new")
+        ]
+    ]
+)
+
 # Клавиатура выбора типа недвижимости
 property_type_kb = ReplyKeyboardMarkup(
     keyboard=[
