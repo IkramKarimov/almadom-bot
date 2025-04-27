@@ -4,7 +4,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 # Клавиатура стартового меню
 def start_menu_keyboard():
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="➕ Добавить объект", callback_data="start")],
+        [InlineKeyboardButton(text="➕ Добавить объект", callback_data="add_property")],
         [InlineKeyboardButton(text="ℹ️ Помощь", callback_data="help")],
     ])
     return keyboard
