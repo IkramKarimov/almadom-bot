@@ -189,7 +189,7 @@ async def process_new_media_upload(message: Message, state: FSMContext):
         media_to_send.append({"type": "video", "file_id": file_id})
 
     await state.update_data(media_to_send=media_to_send)
-    await message.answer("Файл добавлен. Отправьте еще или нажмите «Готово», если закончили.", reply_markup=done_keyboard)
+    await message.answer("Файл добавлен. Отправьте еще или нажмите «Готово».", reply_markup=done_keyboard)
     
 @router.callback_query(lambda c: c.data == "add_more_media")
 async def add_more_media(callback: CallbackQuery):
@@ -198,22 +198,18 @@ async def add_more_media(callback: CallbackQuery):
 @router.message(AddApartment.media, F.text.lower() == "✅ готово")
 async def done_from_button(message: Message, state: FSMContext):
     await preview_listing(message, state)
-    
-# Здесь будет следующий шаг — предварительный просмотр
-import logging
-logger = logging.getLogger(__name__)
 
 @router.message(AddApartment.media, F.text == "Готово")
 async def preview_listing(message: Message, state: FSMContext):
     data = await state.get_data()
-    media_files = data.get('media', [])  # здесь получаем медиа из стейта
+    media_files = data.get('media_to_send', [])
 
     media_to_send = []
-    for file_id in media_files:
-        if file_id.startswith("AgAC"):  # Фото
-            media_to_send.append(InputMediaPhoto(media=file_id))
-        elif file_id.startswith("BAAC") or file_id.startswith("DQAC"):  # Видео
-            media_to_send.append(InputMediaVideo(media=file_id))
+    for media in media_files:
+        if media['type'] == 'photo':
+            media_to_send.append(InputMediaPhoto(media=media['file_id']))
+        elif media['type'] == 'video':
+            media_to_send.append(InputMediaVideo(media=media['file_id']))
 
     if media_to_send:
         await message.answer_media_group(media_to_send)
@@ -238,26 +234,24 @@ async def process_contact(message: Message, state: FSMContext):
     await state.update_data(contact=contact)
 
     data = await state.get_data()
-
-    # Формируем текст поста
+    
+    # Формируем текст
     post_text = generate_post_text(data, contact)
+    media_files = data.get('media_to_send', [])
+    
+    # Подготавливаем медиа
+    media_to_send = []
+    for media in media_files:
+        if media['type'] == 'photo':
+            media_to_send.append(InputMediaPhoto(media=media['file_id']))
+        elif media['type'] == 'video':
+            media_to_send.append(InputMediaVideo(media=media['file_id']))
+
+    if media_to_send:
+        await bot.send_media_group(chat_id=CHANNEL_ID, media=media_to_send)
+
     await bot.send_message(chat_id=CHANNEL_ID, text=post_text)
 
-    # Формируем медиагруппу
-    media_to_send = []
-    for media in data.get("media_files", []):
-        if media["type"] == "photo":
-            media_to_send.append(InputMediaPhoto(media=media["file_id"]))
-        elif media["type"] == "video":
-            media_to_send.append(InputMediaVideo(media=media["file_id"]))
-
-    # Публикация в канал
-    if media_to_send:
-        await message.bot.send_media_files(chat_id=CHANNEL_ID, media=media_group)
-    
-    await message.bot.send_message(chat_id=CHANNEL_ID, text=post_text)
-
-    # Ответ пользователю
     await message.answer("Объявление опубликовано! Спасибо.")
     await state.clear()
 
