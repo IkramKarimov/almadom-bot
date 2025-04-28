@@ -248,7 +248,7 @@ async def process_contact(message: Message, state: FSMContext):
             media_to_send.append(InputMediaVideo(media=media['file_id']))
 
     if media_to_send:
-        await bot.send_media_group(chat_id=CHANNEL_ID, media=media_to_send)
+        await bot.send_media_to_send(chat_id=CHANNEL_ID, media=media_to_send)
 
     await bot.send_message(chat_id=CHANNEL_ID, text=post_text)
 
