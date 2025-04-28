@@ -168,10 +168,10 @@ if media:
         )
     else:
         from aiogram.types import InputMediaPhoto
-        media_group = [InputMediaPhoto(media=m) for m in media]
-        media_group[0].caption = caption
-        media_group[0].parse_mode = "HTML"
-        await message.bot.send_media_group(chat_id=message.chat.id, media=media_group)
+        media_to_send = [InputMediaPhoto(media=m) for m in media]
+        media_to_send[0].caption = caption
+        media_to_send[0].parse_mode = "HTML"
+        await message.bot.send_media_to_send(chat_id=message.chat.id, media=media_group)
         await message.answer("Предпросмотр объекта. Подтвердите публикацию.", reply_markup=confirm_post_kb)
 else:
     await message.answer("Нет медиафайлов для предпросмотра.", reply_markup=confirm_post_kb)
@@ -203,10 +203,10 @@ async def handle_post_confirmation(callback: types.CallbackQuery, state: FSMCont
                 await callback.bot.send_photo(chat_id=channel_id, photo=media[0], caption=caption, parse_mode="HTML")
             else:
                 from aiogram.types import InputMediaPhoto
-                media_group = [InputMediaPhoto(media=m) for m in media]
-                media_group[0].caption = caption
-                media_group[0].parse_mode = "HTML"
-                await callback.bot.send_media_group(chat_id=channel_id, media=media_group)
+                media_to_send = [InputMediaPhoto(media=m) for m in media]
+                media_to_send[0].caption = caption
+                media_to_send[0].parse_mode = "HTML"
+                await callback.bot.send_media_to_send(chat_id=channel_id, media=media_group)
         else:
             await callback.bot.send_message(chat_id=channel_id, text=caption, parse_mode="HTML")
 
@@ -215,11 +215,11 @@ async def handle_post_confirmation(callback: types.CallbackQuery, state: FSMCont
         
         ADMIN_ID = 5528480
         
-        # Отправка админу в личку
-await callback.bot.send_message(
-    chat_id=ADMIN_ID,
-    text=f"✅ Новый объект опубликован:\n\n{caption}",
-    parse_mode="HTML"
+    # Отправка админу в личку
+    await callback.bot.send_message(
+        chat_id=ADMIN_ID,
+        text=f"✅ Новый объект опубликован:\n\n{caption}",
+        parse_mode="HTML"
 )
         
     else:
