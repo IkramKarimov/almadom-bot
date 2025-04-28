@@ -179,16 +179,16 @@ async def ask_media(message: Message, state: FSMContext):
 @router.message(AddApartment.media, F.content_type.in_({'photo', 'video'}))
 async def process_new_media_upload(message: Message, state: FSMContext):
     data = await state.get_data()
-    media_group = data.get('media_group', [])
+    media_to_send = data.get('media_to_send', [])
 
     if message.photo:
         file_id = message.photo[-1].file_id
-        media_group.append({"type": "photo", "file_id": file_id})
+        media_to send.append({"type": "photo", "file_id": file_id})
     elif message.video:
         file_id = message.video.file_id
-        media_group.append({"type": "video", "file_id": file_id})
+        media_to_send.append({"type": "video", "file_id": file_id})
 
-    await state.update_data(media_group=media_group)
+    await state.update_data(media_to_send=media_to_send)
     await message.answer("Файл добавлен. Отправьте еще или нажмите «Готово», если закончили.", reply_markup=done_keyboard)
     
 @router.callback_query(lambda c: c.data == "add_more_media")
