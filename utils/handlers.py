@@ -206,19 +206,21 @@ logger = logging.getLogger(__name__)
 @router.message(AddApartment.media, F.text == "Готово")
 async def preview_listing(message: Message, state: FSMContext):
     data = await state.get_data()
-    media_files = data.get('media', [])  # здесь получаем медиа из стейта
-
+    media_group = data.get('media', [])  # исправил на правильный ключ 'media'
+    
     media_to_send = []
-    for file_id in media_files:
+    for file_id in media_group:
         if file_id.startswith("AgAC"):  # Фото
             media_to_send.append(InputMediaPhoto(media=file_id))
         elif file_id.startswith("BAAC") or file_id.startswith("DQAC"):  # Видео
             media_to_send.append(InputMediaVideo(media=file_id))
 
+    preview_text = generate_preview_text(data)
+    await message.answer(preview_text, reply_markup=get_preview_keyboard())
+
     if media_to_send:
         await message.answer_media_group(media_to_send)
 
-    preview_text = generate_preview_text(data)
     await message.answer(preview_text, reply_markup=get_preview_keyboard())
 
 # ====== ПОДТВЕРЖДЕНИЕ ПУБЛИКАЦИИ ======
