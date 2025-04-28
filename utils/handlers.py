@@ -183,7 +183,7 @@ async def process_new_media_upload(message: Message, state: FSMContext):
 
     if message.photo:
         file_id = message.photo[-1].file_id
-        media_to send.append({"type": "photo", "file_id": file_id})
+        media_to_send.append({"type": "photo", "file_id": file_id})
     elif message.video:
         file_id = message.video.file_id
         media_to_send.append({"type": "video", "file_id": file_id})
