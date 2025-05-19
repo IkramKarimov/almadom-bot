@@ -212,7 +212,7 @@ async def preview_listing(message: Message, state: FSMContext):
             media_to_send.append(InputMediaVideo(media=media['file_id']))
 
     if media_to_send:
-        await message.answer_media_to_send(media_to_send)
+        await message.answer_media_group(media_to_send)
 
     preview_text = generate_preview_text(data)
     await message.answer(preview_text, reply_markup=get_preview_keyboard())
