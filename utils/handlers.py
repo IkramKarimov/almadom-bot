@@ -211,7 +211,7 @@ async def finish_media_upload(message: Message, state: FSMContext):
     if media_to_send:
         await message.answer_media_group(media_to_send)
 
-    preview_text = generate_preview_text(data)
+    preview_text = generate_preview_listing(data)
     await message.answer(preview_text, reply_markup=get_preview_keyboard())
 
 # ====== ПОДТВЕРЖДЕНИЕ ПУБЛИКАЦИИ ======
