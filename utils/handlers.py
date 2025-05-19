@@ -195,12 +195,9 @@ async def process_new_media_upload(message: Message, state: FSMContext):
 async def add_more_media(callback: CallbackQuery):
     await callback.message.answer("Отправьте ещё фото или видео.")
 
-@router.message(AddApartment.media, F.text.lower() == "✅ готово")
+@router.message(AddApartment.media, F.text == "✅ готово")
 async def done_from_button(message: Message, state: FSMContext):
     await preview_listing(message, state)
-
-@router.message(AddApartment.media, F.text == "Готово")
-async def preview_listing(message: Message, state: FSMContext):
     data = await state.get_data()
     media_files = data.get('media_to_send', [])
 
