@@ -197,7 +197,6 @@ async def add_more_media(callback: CallbackQuery):
 
 @router.message(AddApartment.media, F.text.casefold().in_(["готово", "✅ готово"]))
 async def finish_media_upload(message: Message, state: FSMContext):
-    await preview_listing(message, state)
     data = await state.get_data()
     media_files = data.get('media_to_send', [])
 
@@ -211,6 +210,7 @@ async def finish_media_upload(message: Message, state: FSMContext):
     if media_to_send:
         await message.answer_media_group(media_to_send)
 
+    # 👉 заменили вызов несуществующей preview_listing на рабочий код
     preview_text = generate_preview_listing(data)
     await message.answer(preview_text, reply_markup=get_preview_keyboard())
 
