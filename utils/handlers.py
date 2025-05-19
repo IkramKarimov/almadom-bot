@@ -31,7 +31,7 @@ FIELD_NAMES = {
     "media": "Медиа",
 }
 
-def generate_preview_text(data: dict) -> str:
+def generate_preview_listing(data: dict) -> str:
     return (
         f"<b>🏠 Предпросмотр квартиры:</b>\n\n"
         f"📍 <b>Район:</b> {data.get('district', '—')}\n"
