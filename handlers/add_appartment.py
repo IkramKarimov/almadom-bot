@@ -123,7 +123,7 @@ async def handle_media(message: Message, state: FSMContext):
     await state.update_data(media=media)
     await message.answer("Добавлено. Можете отправить ещё или нажмите 'Готово'.")
 
-@router.message(AddApartment.media, F.text.lower() == "готово")
+@router.message(AddApartment.media, F.text.in_(["Готово", "✅ Готово", "готово", "✅ готово"]))
 async def finish_media_upload(message: Message, state: FSMContext):
     data = await state.get_data()
     media = data.get("media", [])
@@ -133,9 +133,42 @@ async def finish_media_upload(message: Message, state: FSMContext):
         return
 
     await message.answer("Спасибо! Все данные собраны. Скоро объект будет опубликован.")
-    await state.clear()
+    await state.set_state("awaiting_confirmation")
 
-    # Здесь можно добавить отправку заявки в канал и админу
+    from utils.keyboards import confirm_post_kb
+
+    caption = (
+        f"<b>Квартира</b>\n"
+        f"Район: {data['district']}\n"
+        f"Комнат: {data['rooms']}\n"
+        f"ЖК: {data.get('residential_complex', '—')}\n"
+        f"Год постройки: {data.get('year_built', '—')}\n"
+        f"Цена: {data.get('price')} ₸\n"
+        f"Площадь: {data.get('area')} м²\n"
+        f"Этаж: {data.get('floor')}/{data.get('total_floors')}\n"
+    )
+
+    media_ids = data.get("media", [])
+    if media_ids:
+        if len(media_ids) == 1:
+            await message.bot.send_photo(
+                chat_id=message.chat.id,
+                photo=media_ids[0],
+                caption=caption,
+                parse_mode="HTML",
+                reply_markup=confirm_post_kb
+            )
+        else:
+            from aiogram.types import InputMediaPhoto
+            media_group = [InputMediaPhoto(media=m) for m in media_ids]
+            media_group[0].caption = caption
+            media_group[0].parse_mode = "HTML"
+            await message.bot.send_media_group(chat_id=message.chat.id, media=media_group)
+            await message.answer("Предпросмотр объекта. Подтвердите публикацию.", reply_markup=confirm_post_kb)
+    else:
+        await message.answer("Нет медиафайлов для предпросмотра.", reply_markup=confirm_post_kb)
+
+# Здесь можно добавить отправку заявки в канал и админу
     
 from utils.keyboards import done_upload_kb
 
