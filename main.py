@@ -42,8 +42,8 @@ if __name__ == "__main__":
     web.run_app(app, host=WEB_SERVER_HOST, port=WEB_SERVER_PORT)
 
 # async def main():
-    logger.info("Удаление Webhook перед запуском polling")
-    await bot.delete_webhook(drop_pending_updates=True)
+    # logger.info("Удаление Webhook перед запуском polling")
+    # await bot.delete_webhook(drop_pending_updates=True)
 
     logger.info("Бот запущен в режиме polling")
     await dp.start_polling(bot)
