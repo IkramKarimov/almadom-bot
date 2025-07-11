@@ -1,6 +1,7 @@
 import logging
 import asyncio
 from aiohttp import web
+from aiogram.types import Update
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
