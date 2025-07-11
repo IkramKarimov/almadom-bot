@@ -41,15 +41,15 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     web.run_app(app, host=WEB_SERVER_HOST, port=WEB_SERVER_PORT)
 
-# async def main():
-    # logger.info("Удаление Webhook перед запуском polling")
-    # await bot.delete_webhook(drop_pending_updates=True)
+#async def main():
+    #logger.info("Удаление Webhook перед запуском polling")
+    #await bot.delete_webhook(drop_pending_updates=True)
 
-    logger.info("Бот запущен в режиме polling")
-    await dp.start_polling(bot)
+    #logger.info("Бот запущен в режиме polling")
+    #await dp.start_polling(bot)
 
-if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except (KeyboardInterrupt, SystemExit):
-        logger.info("Бот остановлен.")
+#if __name__ == "__main__":
+    #try:
+        #asyncio.run(main())
+    #except (KeyboardInterrupt, SystemExit):
+        #logger.info("Бот остановлен.")
